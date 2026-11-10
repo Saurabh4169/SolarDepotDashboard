@@ -22,16 +22,24 @@ import Badge from '../../components/common/Badge';
 import Select from '../components/Select';
 import Toggle from '../components/Toggle';
 import { useAdmin } from '../context/AdminContext';
+import { useAdminData } from '../context/AdminDataContext';
 import { enquiriesService } from '../services/enquiriesService';
 
 export default function EnquiriesAdminPage() {
   const { showAdminToast } = useAdmin();
+  const { getCachedData, setCachedData, getPageState, setPageState } = useAdminData();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [enquiries, setEnquiries] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const savedState = getPageState('enquiries', { search: '', statusFilter: 'All' });
+  const cachedEnqs = getCachedData('enquiries');
+  const [enquiries, setEnquiries] = useState(cachedEnqs || []);
+  const [isLoading, setIsLoading] = useState(!cachedEnqs);
+  const [search, setSearch] = useState(savedState.search);
+  const [statusFilter, setStatusFilter] = useState(savedState.statusFilter);
+
+  useEffect(() => {
+    setPageState('enquiries', { search, statusFilter });
+  }, [search, statusFilter, setPageState]);
 
   // Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -63,12 +71,15 @@ export default function EnquiriesAdminPage() {
 
   const loadEnquiries = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!getCachedData('enquiries')) {
+        setIsLoading(true);
+      }
       const data = await enquiriesService.getAll({
         search,
         status: statusFilter,
       });
       setEnquiries(data);
+      setCachedData('enquiries', data);
       return data;
     } catch (err) {
       showAdminToast('Failed to load enquiries', 'error');
@@ -76,7 +87,7 @@ export default function EnquiriesAdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [search, statusFilter, showAdminToast]);
+  }, [search, statusFilter, showAdminToast, getCachedData, setCachedData]);
 
   useEffect(() => {
     loadEnquiries();

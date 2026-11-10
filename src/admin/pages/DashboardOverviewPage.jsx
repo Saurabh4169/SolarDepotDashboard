@@ -19,6 +19,7 @@ import Select from '../components/Select';
 import Toggle from '../components/Toggle';
 import { StatCardSkeleton } from '../components/Skeleton';
 import { useAdmin } from '../context/AdminContext';
+import { useAdminData } from '../context/AdminDataContext';
 
 // Services
 import { productsService } from '../services/productsService';
@@ -29,19 +30,23 @@ import { notificationsService } from '../services/notificationsService';
 
 export default function DashboardOverviewPage() {
   const { showAdminToast } = useAdmin();
+  const { getCachedData, setCachedData } = useAdminData();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [stats, setStats] = useState({
-    totalProducts: 0,
-    activeProducts: 0,
-    totalEnquiries: 0,
-    newEnquiriesCount: 0,
-    quotesPreparedCount: 0,
-    totalCustomers: 0,
-  });
+  const cachedOverview = getCachedData('dashboard_overview');
+  const [isLoading, setIsLoading] = useState(!cachedOverview);
+  const [stats, setStats] = useState(
+    cachedOverview?.stats || {
+      totalProducts: 0,
+      activeProducts: 0,
+      totalEnquiries: 0,
+      newEnquiriesCount: 0,
+      quotesPreparedCount: 0,
+      totalCustomers: 0,
+    }
+  );
 
-  const [categoryChartData, setCategoryChartData] = useState([]);
-  const [enquiriesList, setEnquiriesList] = useState([]);
+  const [categoryChartData, setCategoryChartData] = useState(cachedOverview?.categoryChartData || []);
+  const [enquiriesList, setEnquiriesList] = useState(cachedOverview?.enquiriesList || []);
 
   // Drawer & Modal state
   const [selectedEnquiry, setSelectedEnquiry] = useState(null);
@@ -56,10 +61,12 @@ export default function DashboardOverviewPage() {
   const [newNotifBody, setNewNotifBody] = useState('');
   const [newNotifType, setNewNotifType] = useState('system');
 
-  // Load dashboard data
+  // Load dashboard data with background revalidation
   const loadDashboardData = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!getCachedData('dashboard_overview')) {
+        setIsLoading(true);
+      }
       const [prodsRes, cats, enqs, custs] = await Promise.all([
         productsService.getAll({ limit: 100 }),
         categoriesService.getAll(),
@@ -72,16 +79,14 @@ export default function DashboardOverviewPage() {
       const newEnqs = enqs.filter((e) => e.status === 'New' || e.status === 'Submitted (Demo)').length;
       const quotesPrep = enqs.filter((e) => e.status === 'Quote Prepared' || e.status === 'Completed').length;
 
-      setStats({
+      const newStats = {
         totalProducts: allProducts.length,
         activeProducts: activeProds,
         totalEnquiries: enqs.length,
         newEnquiriesCount: newEnqs,
         quotesPreparedCount: quotesPrep,
         totalCustomers: custs.length,
-      });
-
-      setEnquiriesList(enqs);
+      };
 
       // Build categories chart data with short horizontal labels
       const catCounts = cats.map((cat) => {
@@ -98,14 +103,24 @@ export default function DashboardOverviewPage() {
           count,
         };
       });
+
+      setStats(newStats);
+      setEnquiriesList(enqs);
       setCategoryChartData(catCounts);
+
+      // Save to shared cache for instant future loads
+      setCachedData('dashboard_overview', {
+        stats: newStats,
+        categoryChartData: catCounts,
+        enquiriesList: enqs,
+      });
     } catch (err) {
       console.error('Error loading dashboard data:', err);
       showAdminToast('Failed to load dashboard metrics', 'error');
     } finally {
       setIsLoading(false);
     }
-  }, [showAdminToast]);
+  }, [showAdminToast, getCachedData, setCachedData]);
 
   useEffect(() => {
     loadDashboardData();

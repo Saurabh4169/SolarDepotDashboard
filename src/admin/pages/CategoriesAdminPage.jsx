@@ -9,15 +9,23 @@ import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import Select from '../components/Select';
 import { useAdmin } from '../context/AdminContext';
+import { useAdminData } from '../context/AdminDataContext';
 import { categoriesService } from '../services/categoriesService';
 
 export default function CategoriesAdminPage() {
   const { showAdminToast } = useAdmin();
+  const { getCachedData, setCachedData, getPageState, setPageState } = useAdminData();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const savedState = getPageState('categories', { search: '' });
+  const cachedCats = getCachedData('categories');
+  const [categories, setCategories] = useState(cachedCats || []);
+  const [isLoading, setIsLoading] = useState(!cachedCats);
+  const [search, setSearch] = useState(savedState.search);
+
+  useEffect(() => {
+    setPageState('categories', { search });
+  }, [search, setPageState]);
 
   // Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -43,9 +51,12 @@ export default function CategoriesAdminPage() {
 
   const loadCategories = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!getCachedData('categories')) {
+        setIsLoading(true);
+      }
       const data = await categoriesService.getAll();
       setCategories(data);
+      setCachedData('categories', data);
       return data;
     } catch (err) {
       showAdminToast('Failed to load categories', 'error');
@@ -53,7 +64,7 @@ export default function CategoriesAdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [showAdminToast]);
+  }, [showAdminToast, getCachedData, setCachedData]);
 
   useEffect(() => {
     loadCategories();

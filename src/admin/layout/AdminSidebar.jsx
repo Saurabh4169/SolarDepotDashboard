@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -6,7 +6,6 @@ import {
   Layers,
   Cpu,
   FolderKanban,
-  FileDown,
   MessageSquareQuote,
   Building2,
   Users,
@@ -18,6 +17,7 @@ import {
 } from 'lucide-react';
 import Logo from '../../components/common/Logo';
 import { useAdmin } from '../context/AdminContext';
+import { prefetchRoute } from '../utils/prefetch';
 
 export default function AdminSidebar() {
   const {
@@ -29,6 +29,16 @@ export default function AdminSidebar() {
     unreadNotifCount,
   } = useAdmin();
 
+  const navScrollRef = useRef(null);
+
+  // Restore sidebar scroll position across navigation
+  useEffect(() => {
+    const saved = sessionStorage.getItem('solardepot_sidebar_scroll');
+    if (saved && navScrollRef.current) {
+      navScrollRef.current.scrollTop = Number(saved);
+    }
+  }, []);
+
   const navSections = [
     {
       title: 'STOREFRONT MANAGEMENT',
@@ -38,7 +48,6 @@ export default function AdminSidebar() {
         { label: 'Categories', path: '/admin/categories', icon: Layers },
         { label: 'Solutions', path: '/admin/solutions', icon: Cpu },
         { label: 'Projects', path: '/admin/projects', icon: FolderKanban },
-        { label: 'Downloads', path: '/admin/downloads', icon: FileDown },
       ],
     },
     {
@@ -51,7 +60,7 @@ export default function AdminSidebar() {
     {
       title: 'ADMINISTRATION',
       items: [
-        { label: 'Users', path: '/admin/users', icon: Users },
+        { label: 'Admin', path: '/admin/users', icon: Users },
         {
           label: 'Notifications',
           path: '/admin/notifications',
@@ -121,7 +130,13 @@ export default function AdminSidebar() {
           </div>
 
           {/* Scrollable Navigation List */}
-          <div className="flex-1 overflow-y-auto px-3.5 py-4 space-y-6 custom-scrollbar">
+          <div
+            ref={navScrollRef}
+            onScroll={(e) => {
+              sessionStorage.setItem('solardepot_sidebar_scroll', String(e.currentTarget.scrollTop));
+            }}
+            className="flex-1 overflow-y-auto px-3.5 py-4 space-y-6 custom-scrollbar"
+          >
             {navSections.map((section, sIdx) => (
               <div key={sIdx} className="space-y-1">
                 {/* Section Title */}
@@ -142,6 +157,9 @@ export default function AdminSidebar() {
                       to={item.path}
                       end={Boolean(item.exact)}
                       onClick={() => setMobileSidebarOpen(false)}
+                      onMouseEnter={() => prefetchRoute(item.path)}
+                      onFocus={() => prefetchRoute(item.path)}
+                      onTouchStart={() => prefetchRoute(item.path)}
                       title={sidebarCollapsed ? item.label : undefined}
                       className={({ isActive }) => `
                         group relative flex items-center gap-3 px-3.5 h-[44px] rounded-[12px] text-[15px] font-medium

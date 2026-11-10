@@ -10,17 +10,25 @@ import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import Select from '../components/Select';
 import { useAdmin } from '../context/AdminContext';
+import { useAdminData } from '../context/AdminDataContext';
 import { customersService } from '../services/customersService';
 
 export default function CustomersAdminPage() {
   const { showAdminToast } = useAdmin();
+  const { getCachedData, setCachedData, getPageState, setPageState } = useAdminData();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [customers, setCustomers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [tierFilter, setTierFilter] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const savedState = getPageState('customers', { search: '', tierFilter: 'All', statusFilter: 'All' });
+  const cachedCusts = getCachedData('customers');
+  const [customers, setCustomers] = useState(cachedCusts || []);
+  const [isLoading, setIsLoading] = useState(!cachedCusts);
+  const [search, setSearch] = useState(savedState.search);
+  const [tierFilter, setTierFilter] = useState(savedState.tierFilter);
+  const [statusFilter, setStatusFilter] = useState(savedState.statusFilter);
+
+  useEffect(() => {
+    setPageState('customers', { search, tierFilter, statusFilter });
+  }, [search, tierFilter, statusFilter, setPageState]);
 
   // Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -48,13 +56,16 @@ export default function CustomersAdminPage() {
 
   const loadCustomers = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!getCachedData('customers')) {
+        setIsLoading(true);
+      }
       const data = await customersService.getAll({
         search,
         tier: tierFilter,
         status: statusFilter,
       });
       setCustomers(data);
+      setCachedData('customers', data);
       return data;
     } catch (err) {
       showAdminToast('Failed to load customers', 'error');
@@ -62,7 +73,7 @@ export default function CustomersAdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [search, tierFilter, statusFilter, showAdminToast]);
+  }, [search, tierFilter, statusFilter, showAdminToast, getCachedData, setCachedData]);
 
   useEffect(() => {
     loadCustomers();

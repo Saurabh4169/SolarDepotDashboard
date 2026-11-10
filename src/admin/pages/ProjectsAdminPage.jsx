@@ -9,16 +9,24 @@ import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import Select from '../components/Select';
 import { useAdmin } from '../context/AdminContext';
+import { useAdminData } from '../context/AdminDataContext';
 import { projectsService } from '../services/projectsService';
 
 export default function ProjectsAdminPage() {
   const { showAdminToast } = useAdmin();
+  const { getCachedData, setCachedData, getPageState, setPageState } = useAdminData();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [projects, setProjects] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const savedState = getPageState('projects', { search: '', selectedCategory: 'All' });
+  const cachedProjects = getCachedData('projects');
+  const [projects, setProjects] = useState(cachedProjects || []);
+  const [isLoading, setIsLoading] = useState(!cachedProjects);
+  const [search, setSearch] = useState(savedState.search);
+  const [selectedCategory, setSelectedCategory] = useState(savedState.selectedCategory);
+
+  useEffect(() => {
+    setPageState('projects', { search, selectedCategory });
+  }, [search, selectedCategory, setPageState]);
 
   // Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -46,12 +54,15 @@ export default function ProjectsAdminPage() {
 
   const loadProjects = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!getCachedData('projects')) {
+        setIsLoading(true);
+      }
       const data = await projectsService.getAll({
         search,
         category: selectedCategory,
       });
       setProjects(data);
+      setCachedData('projects', data);
       return data;
     } catch (err) {
       showAdminToast('Failed to load projects', 'error');
@@ -59,7 +70,7 @@ export default function ProjectsAdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [search, selectedCategory, showAdminToast]);
+  }, [search, selectedCategory, showAdminToast, getCachedData, setCachedData]);
 
   useEffect(() => {
     loadProjects();

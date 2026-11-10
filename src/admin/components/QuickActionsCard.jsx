@@ -1,11 +1,11 @@
 import React from 'react';
-import { PlusCircle, FolderPlus, UploadCloud, UserPlus, ChevronRight } from 'lucide-react';
+import { PlusCircle, FolderPlus, Cpu, UserPlus, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function QuickActionsCard({
   onAddProduct,
   onAddProject,
-  onUploadDatasheet,
+  onAddSolution,
   onAddCustomer,
 }) {
   const navigate = useNavigate();
@@ -28,12 +28,12 @@ export default function QuickActionsCard({
       action: onAddProject || (() => navigate('/admin/projects?action=create')),
     },
     {
-      title: 'Upload Datasheet',
-      desc: 'Publish PDF manual or technical certificate',
-      icon: UploadCloud,
+      title: 'Add Solution',
+      desc: 'Configure commercial solar system package',
+      icon: Cpu,
       iconColor: 'text-cantaloupe-500',
       bgColor: 'bg-[#FC734D]/10',
-      action: onUploadDatasheet || (() => navigate('/admin/downloads?action=upload')),
+      action: onAddSolution || (() => navigate('/admin/solutions?action=create')),
     },
     {
       title: 'Add Customer',

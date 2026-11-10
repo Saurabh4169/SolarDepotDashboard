@@ -8,7 +8,25 @@ const AdminContext = createContext(null);
 export function AdminProvider({ children }) {
   const [adminUser, setAdminUser] = useState(null);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsedState] = useState(() => {
+    try {
+      return window.localStorage.getItem('solardepot_sidebar_collapsed') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const setSidebarCollapsed = useCallback((valOrFn) => {
+    setSidebarCollapsedState((prev) => {
+      const next = typeof valOrFn === 'function' ? valOrFn(prev) : valOrFn;
+      try {
+        window.localStorage.setItem('solardepot_sidebar_collapsed', String(next));
+      } catch (e) {
+        // ignore
+      }
+      return next;
+    });
+  }, []);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [adminToast, setAdminToast] = useState({ visible: false, message: '', type: 'info' });

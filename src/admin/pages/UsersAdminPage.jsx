@@ -10,17 +10,25 @@ import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import Select from '../components/Select';
 import { useAdmin } from '../context/AdminContext';
+import { useAdminData } from '../context/AdminDataContext';
 import { usersService } from '../services/usersService';
 
 export default function UsersAdminPage() {
   const { showAdminToast, adminUser: currentLoggedUser } = useAdmin();
+  const { getCachedData, setCachedData, getPageState, setPageState } = useAdminData();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [roleFilter, setRoleFilter] = useState('All');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const savedState = getPageState('users', { search: '', roleFilter: 'All', statusFilter: 'All' });
+  const cachedUsers = getCachedData('users');
+  const [users, setUsers] = useState(cachedUsers || []);
+  const [isLoading, setIsLoading] = useState(!cachedUsers);
+  const [search, setSearch] = useState(savedState.search);
+  const [roleFilter, setRoleFilter] = useState(savedState.roleFilter);
+  const [statusFilter, setStatusFilter] = useState(savedState.statusFilter);
+
+  useEffect(() => {
+    setPageState('users', { search, roleFilter, statusFilter });
+  }, [search, roleFilter, statusFilter, setPageState]);
 
   // Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -46,13 +54,16 @@ export default function UsersAdminPage() {
 
   const loadUsers = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!getCachedData('users')) {
+        setIsLoading(true);
+      }
       const data = await usersService.getAll({
         search,
         role: roleFilter,
         status: statusFilter,
       });
       setUsers(data);
+      setCachedData('users', data);
       return data;
     } catch (err) {
       showAdminToast('Failed to load admin users', 'error');
@@ -60,7 +71,7 @@ export default function UsersAdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [search, roleFilter, statusFilter, showAdminToast]);
+  }, [search, roleFilter, statusFilter, showAdminToast, getCachedData, setCachedData]);
 
   useEffect(() => {
     loadUsers();
@@ -364,7 +375,7 @@ export default function UsersAdminPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="font-display text-[28px] font-semibold text-navy leading-tight">
-            Users & Administration
+            Admin
           </h2>
           <p className="text-[14px] text-slate-500 mt-1">
             Manage system administrators, support specialists, and platform permissions
@@ -372,7 +383,7 @@ export default function UsersAdminPage() {
         </div>
 
         <Button variant="primary" icon={Plus} onClick={handleOpenAdd}>
-          Add User
+          Add Admin
         </Button>
       </div>
 

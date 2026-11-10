@@ -4,19 +4,31 @@ import AdminRoute from '../admin/components/AdminRoute';
 import AdminLayout from '../admin/layout/AdminLayout';
 import PageLoader from '../admin/components/PageLoader';
 
-// Lazy-loaded Admin Pages
-const DashboardOverviewPage = lazy(() => import('../admin/pages/DashboardOverviewPage'));
-const ProductsAdminPage = lazy(() => import('../admin/pages/ProductsAdminPage'));
-const CategoriesAdminPage = lazy(() => import('../admin/pages/CategoriesAdminPage'));
-const SolutionsAdminPage = lazy(() => import('../admin/pages/SolutionsAdminPage'));
-const ProjectsAdminPage = lazy(() => import('../admin/pages/ProjectsAdminPage'));
-const DownloadsAdminPage = lazy(() => import('../admin/pages/DownloadsAdminPage'));
-const EnquiriesAdminPage = lazy(() => import('../admin/pages/EnquiriesAdminPage'));
-const CustomersAdminPage = lazy(() => import('../admin/pages/CustomersAdminPage'));
-const UsersAdminPage = lazy(() => import('../admin/pages/UsersAdminPage'));
-const NotificationsAdminPage = lazy(() => import('../admin/pages/NotificationsAdminPage'));
-const SettingsAdminPage = lazy(() => import('../admin/pages/SettingsAdminPage'));
-const AdminLoginPage = lazy(() => import('../admin/pages/AdminLoginPage'));
+// Exported loader functions for instant chunk prefetching
+export const loadDashboardOverview = () => import('../admin/pages/DashboardOverviewPage');
+export const loadProductsPage = () => import('../admin/pages/ProductsAdminPage');
+export const loadCategoriesPage = () => import('../admin/pages/CategoriesAdminPage');
+export const loadSolutionsPage = () => import('../admin/pages/SolutionsAdminPage');
+export const loadProjectsPage = () => import('../admin/pages/ProjectsAdminPage');
+export const loadEnquiriesPage = () => import('../admin/pages/EnquiriesAdminPage');
+export const loadCustomersPage = () => import('../admin/pages/CustomersAdminPage');
+export const loadUsersPage = () => import('../admin/pages/UsersAdminPage');
+export const loadNotificationsPage = () => import('../admin/pages/NotificationsAdminPage');
+export const loadSettingsPage = () => import('../admin/pages/SettingsAdminPage');
+export const loadLoginPage = () => import('../admin/pages/AdminLoginPage');
+
+// Lazy-loaded Admin Pages using exported loader functions
+const DashboardOverviewPage = lazy(loadDashboardOverview);
+const ProductsAdminPage = lazy(loadProductsPage);
+const CategoriesAdminPage = lazy(loadCategoriesPage);
+const SolutionsAdminPage = lazy(loadSolutionsPage);
+const ProjectsAdminPage = lazy(loadProjectsPage);
+const EnquiriesAdminPage = lazy(loadEnquiriesPage);
+const CustomersAdminPage = lazy(loadCustomersPage);
+const UsersAdminPage = lazy(loadUsersPage);
+const NotificationsAdminPage = lazy(loadNotificationsPage);
+const SettingsAdminPage = lazy(loadSettingsPage);
+const AdminLoginPage = lazy(loadLoginPage);
 
 export default function AppRoutes() {
   return (
@@ -49,7 +61,8 @@ export default function AppRoutes() {
         <Route path="categories" element={<CategoriesAdminPage />} />
         <Route path="solutions" element={<SolutionsAdminPage />} />
         <Route path="projects" element={<ProjectsAdminPage />} />
-        <Route path="downloads" element={<DownloadsAdminPage />} />
+        {/* Downloads route removed from admin; redirected to /admin */}
+        <Route path="downloads" element={<Navigate to="/admin" replace />} />
         <Route path="enquiries" element={<EnquiriesAdminPage />} />
         <Route path="customers" element={<CustomersAdminPage />} />
         <Route path="users" element={<UsersAdminPage />} />
@@ -63,7 +76,7 @@ export default function AppRoutes() {
       <Route path="/categories" element={<Navigate to="/admin/categories" replace />} />
       <Route path="/solutions" element={<Navigate to="/admin/solutions" replace />} />
       <Route path="/projects" element={<Navigate to="/admin/projects" replace />} />
-      <Route path="/downloads" element={<Navigate to="/admin/downloads" replace />} />
+      <Route path="/downloads" element={<Navigate to="/admin" replace />} />
       <Route path="/enquiries" element={<Navigate to="/admin/enquiries" replace />} />
       <Route path="/customers" element={<Navigate to="/admin/customers" replace />} />
       <Route path="/users" element={<Navigate to="/admin/users" replace />} />

@@ -9,15 +9,23 @@ import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import Select from '../components/Select';
 import { useAdmin } from '../context/AdminContext';
+import { useAdminData } from '../context/AdminDataContext';
 import { solutionsService } from '../services/solutionsService';
 
 export default function SolutionsAdminPage() {
   const { showAdminToast } = useAdmin();
+  const { getCachedData, setCachedData, getPageState, setPageState } = useAdminData();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [solutions, setSolutions] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const savedState = getPageState('solutions', { search: '' });
+  const cachedSols = getCachedData('solutions');
+  const [solutions, setSolutions] = useState(cachedSols || []);
+  const [isLoading, setIsLoading] = useState(!cachedSols);
+  const [search, setSearch] = useState(savedState.search);
+
+  useEffect(() => {
+    setPageState('solutions', { search });
+  }, [search, setPageState]);
 
   // Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -43,9 +51,12 @@ export default function SolutionsAdminPage() {
 
   const loadSolutions = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!getCachedData('solutions')) {
+        setIsLoading(true);
+      }
       const data = await solutionsService.getAll();
       setSolutions(data);
+      setCachedData('solutions', data);
       return data;
     } catch (err) {
       showAdminToast('Failed to load solutions', 'error');
@@ -53,7 +64,7 @@ export default function SolutionsAdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [showAdminToast]);
+  }, [showAdminToast, getCachedData, setCachedData]);
 
   useEffect(() => {
     loadSolutions();

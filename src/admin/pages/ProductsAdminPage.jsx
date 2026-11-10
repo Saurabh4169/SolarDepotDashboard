@@ -27,6 +27,7 @@ import Badge from '../../components/common/Badge';
 import Select from '../components/Select';
 import Toggle from '../components/Toggle';
 import { useAdmin } from '../context/AdminContext';
+import { useAdminData } from '../context/AdminDataContext';
 import { productsService } from '../services/productsService';
 import { categoriesService } from '../services/categoriesService';
 import { images } from '../../data/images';
@@ -46,21 +47,52 @@ const PRESET_IMAGES = [
 
 export default function ProductsAdminPage() {
   const { showAdminToast } = useAdmin();
+  const { getCachedData, setCachedData, getPageState, setPageState } = useAdminData();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Restore preserved page filter/sort/pagination state
+  const savedState = getPageState('products', {
+    search: '',
+    selectedCategory: 'All',
+    selectedPhase: 'All',
+    selectedStatus: 'All',
+    sortColumn: 'name',
+    sortDirection: 'asc',
+    page: 1,
+  });
 
-  // Filters & Pagination
-  const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedPhase, setSelectedPhase] = useState('All');
-  const [selectedStatus, setSelectedStatus] = useState('All');
-  const [sortColumn, setSortColumn] = useState('name');
-  const [sortDirection, setSortDirection] = useState('asc');
-  const [page, setPage] = useState(1);
-  const [pagination, setPagination] = useState({ total: 0, page: 1, limit: 8, totalPages: 1 });
+  const cachedProds = getCachedData('products');
+  const [products, setProducts] = useState(cachedProds?.items || []);
+  const [categories, setCategories] = useState(getCachedData('categories') || []);
+  const [isLoading, setIsLoading] = useState(!cachedProds);
+
+  // Filters & Pagination initialized from preserved state
+  const [search, setSearch] = useState(savedState.search);
+  const [selectedCategory, setSelectedCategory] = useState(savedState.selectedCategory);
+  const [selectedPhase, setSelectedPhase] = useState(savedState.selectedPhase);
+  const [selectedStatus, setSelectedStatus] = useState(savedState.selectedStatus);
+  const [sortColumn, setSortColumn] = useState(savedState.sortColumn);
+  const [sortDirection, setSortDirection] = useState(savedState.sortDirection);
+  const [page, setPage] = useState(savedState.page);
+  const [pagination, setPagination] = useState({
+    total: cachedProds?.total || 0,
+    page: savedState.page,
+    limit: 8,
+    totalPages: cachedProds?.totalPages || 1,
+  });
+
+  // Preserve filter/search state in memory across navigation
+  useEffect(() => {
+    setPageState('products', {
+      search,
+      selectedCategory,
+      selectedPhase,
+      selectedStatus,
+      sortColumn,
+      sortDirection,
+      page,
+    });
+  }, [search, selectedCategory, selectedPhase, selectedStatus, sortColumn, sortDirection, page, setPageState]);
 
   // Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -91,10 +123,12 @@ export default function ProductsAdminPage() {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Load products list
+  // Load products list with stale-while-revalidate background caching
   const loadProducts = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!getCachedData('products')) {
+        setIsLoading(true);
+      }
       const res = await productsService.getAll({
         search,
         category: selectedCategory,
@@ -113,6 +147,7 @@ export default function ProductsAdminPage() {
         limit: res.limit,
         totalPages: res.totalPages,
       });
+      setCachedData('products', res);
       return res.items;
     } catch (err) {
       console.error(err);
@@ -121,7 +156,7 @@ export default function ProductsAdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [search, selectedCategory, selectedPhase, selectedStatus, sortColumn, sortDirection, page, showAdminToast]);
+  }, [search, selectedCategory, selectedPhase, selectedStatus, sortColumn, sortDirection, page, showAdminToast, getCachedData, setCachedData]);
 
   useEffect(() => {
     loadProducts();

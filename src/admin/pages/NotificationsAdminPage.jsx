@@ -19,15 +19,23 @@ import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import Select from '../components/Select';
 import { useAdmin } from '../context/AdminContext';
+import { useAdminData } from '../context/AdminDataContext';
 import { notificationsService } from '../services/notificationsService';
 
 export default function NotificationsAdminPage() {
   const { showAdminToast, refreshNotifications } = useAdmin();
+  const { getCachedData, setCachedData, getPageState, setPageState } = useAdminData();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [notifications, setNotifications] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const savedState = getPageState('notifications', { search: '' });
+  const cachedNotifs = getCachedData('notifications');
+  const [notifications, setNotifications] = useState(cachedNotifs || []);
+  const [isLoading, setIsLoading] = useState(!cachedNotifs);
+  const [search, setSearch] = useState(savedState.search);
+
+  useEffect(() => {
+    setPageState('notifications', { search });
+  }, [search, setPageState]);
 
   // Drawer State
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -51,9 +59,12 @@ export default function NotificationsAdminPage() {
 
   const loadNotifications = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!getCachedData('notifications')) {
+        setIsLoading(true);
+      }
       const data = await notificationsService.getAll();
       setNotifications(data);
+      setCachedData('notifications', data);
       return data;
     } catch (err) {
       showAdminToast('Failed to load notifications', 'error');
@@ -61,7 +72,7 @@ export default function NotificationsAdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [showAdminToast]);
+  }, [showAdminToast, getCachedData, setCachedData]);
 
   useEffect(() => {
     loadNotifications();

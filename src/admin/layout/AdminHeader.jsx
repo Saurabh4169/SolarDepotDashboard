@@ -63,9 +63,6 @@ export default function AdminHeader() {
     if (pathname.startsWith('/admin/projects')) {
       return { parent: 'Dashboard', current: 'Projects' };
     }
-    if (pathname.startsWith('/admin/downloads')) {
-      return { parent: 'Dashboard', current: 'Downloads' };
-    }
     if (pathname.startsWith('/admin/enquiries')) {
       return { parent: 'Dashboard', current: 'Enquiries & Quotes' };
     }
@@ -73,7 +70,7 @@ export default function AdminHeader() {
       return { parent: 'Dashboard', current: 'Customers' };
     }
     if (pathname.startsWith('/admin/users')) {
-      return { parent: 'Dashboard', current: 'Users' };
+      return { parent: 'Dashboard', current: 'Admin' };
     }
     if (pathname.startsWith('/admin/notifications')) {
       return { parent: 'Dashboard', current: 'Notifications' };
