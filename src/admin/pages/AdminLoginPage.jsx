@@ -117,42 +117,10 @@ export default function AdminLoginPage() {
   const isFormValid = email.trim().length > 0 && password.length > 0;
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-gradient-to-br from-[#DDF1FA] to-[#EAF6FC] flex items-center justify-center p-3 sm:p-6 lg:p-8 select-none overflow-hidden">
-      {/* Background ambient decorative layers strictly clipped */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-28 -left-28 w-[500px] h-[500px] rounded-full bg-[#0297DE]/18 blur-[130px]" />
-        <div className="absolute -bottom-28 -right-28 w-[480px] h-[480px] rounded-full bg-[#FC734D]/12 blur-[130px]" />
-
-        {/* Decorative Faint Dashed Curved Lines */}
-        <svg
-          className="w-full h-full stroke-white/40"
-          fill="none"
-          viewBox="0 0 1440 900"
-          preserveAspectRatio="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M -100,520 C 220,460 380,240 540,110 C 700,-30 940,90 1250,40"
-            strokeWidth="1.5"
-            strokeDasharray="6 8"
-          />
-          <path
-            d="M 180,950 C 480,900 820,780 1140,460 C 1340,240 1560,140 1780,90"
-            strokeWidth="1.5"
-            strokeDasharray="6 8"
-          />
-          <path
-            d="M -60,220 C 280,240 620,470 940,630 C 1240,780 1540,830 1850,870"
-            strokeWidth="1.5"
-            strokeDasharray="6 8"
-          />
-        </svg>
-      </div>
-
-      {/* Main Centered Card */}
-      <div className="relative z-10 w-full max-w-[1120px] lg:h-[640px] bg-white/[0.92] backdrop-blur-[16px] rounded-[24px] border border-[#0297DE]/12 shadow-[0_30px_80px_-20px_rgba(7,27,42,0.25)] animate-card-enter grid grid-cols-1 lg:grid-cols-2 p-3 sm:p-4 gap-0 my-auto min-w-0">
+    <div className="relative min-h-[100dvh] w-full bg-white flex flex-col justify-between select-none overflow-x-hidden">
+      <div className="w-full flex-1 grid grid-cols-1 lg:grid-cols-2 min-h-[100dvh]">
         {/* LEFT COLUMN: Login Form Area */}
-        <div className="flex flex-col justify-between p-4 sm:p-6 lg:p-10 h-full relative min-w-0">
+        <div className="flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 h-full relative min-w-0 bg-white">
           {/* Top Logo */}
           <div className="flex items-center">
             <Logo size="sm" light={false} linkTo="/" />
@@ -198,7 +166,7 @@ export default function AdminLoginPage() {
                     className={`w-full h-12 pl-10 pr-4 rounded-xl text-[14px] bg-white border ${
                       fieldErrors.email
                         ? 'border-rose-400 ring-1 ring-rose-300'
-                        : 'border-[#0297DE]/20'
+                        : 'border-slate-200 hover:border-slate-300'
                     } text-navy placeholder:text-slate-400 font-medium transition-all shadow-sm focus:outline-none focus:border-electric-500 focus:ring-2 focus:ring-electric-500/25`}
                   />
                 </div>
@@ -227,7 +195,7 @@ export default function AdminLoginPage() {
                     className={`w-full h-12 pl-10 pr-11 rounded-xl text-[14px] bg-white border ${
                       fieldErrors.password
                         ? 'border-rose-400 ring-1 ring-rose-300'
-                        : 'border-[#0297DE]/20'
+                        : 'border-slate-200 hover:border-slate-300'
                     } text-navy placeholder:text-slate-400 font-medium transition-all shadow-sm focus:outline-none focus:border-electric-500 focus:ring-2 focus:ring-electric-500/25`}
                   />
                   <button
@@ -308,75 +276,71 @@ export default function AdminLoginPage() {
         </div>
 
         {/* RIGHT COLUMN: Rounded Image Panel with Inner Glass Frame */}
-        <div
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className="hidden lg:flex relative rounded-[20px] overflow-hidden h-full flex-col justify-between p-6 select-none"
-          style={{
-            background: 'linear-gradient(145deg, #071B2A 0%, #0b2f4a 45%, #0297DE 100%)',
-          }}
-        >
-          {/* Faint Concentric Ripple Arcs (8-10% opacity) */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute -bottom-20 -left-20 w-[480px] h-[480px] rounded-full border border-white/[0.09]" />
-            <div className="absolute -bottom-32 -left-32 w-[640px] h-[640px] rounded-full border border-white/[0.08]" />
-            <div className="absolute -bottom-44 -left-44 w-[800px] h-[800px] rounded-full border border-white/[0.07]" />
-          </div>
-
-          {/* Soft Blurred Cantaloupe Glow Dot (matches reference orange blur) */}
-          <div className="absolute top-28 left-20 w-16 h-16 rounded-full bg-cantaloupe-500/70 blur-xl pointer-events-none" />
-
-          {/* Inner Glass Frame */}
-          <div className="relative z-10 w-full h-full rounded-[18px] border border-white/25 bg-gradient-to-br from-white/[0.14] to-white/[0.04] backdrop-blur-[14px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] p-7 flex flex-col justify-between overflow-hidden">
-            {/* Top Headline & Subtitle */}
-            <div className="relative z-20 max-w-[380px]">
-              <h2 className="font-display text-[30px] lg:text-[32px] font-semibold text-white leading-[1.18] tracking-tight">
-                {slides[currentSlide].headline}
-              </h2>
-              <p className="text-[14px] text-white/75 mt-2.5 leading-relaxed font-sans">
-                {slides[currentSlide].subtitle}
-              </p>
+        <div className="hidden lg:flex flex-col p-4 sm:p-6 lg:p-7 xl:p-8 h-full min-h-[100dvh]">
+          <div
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="relative rounded-[28px] overflow-hidden h-full w-full flex flex-col justify-between p-4 lg:p-5 select-none shadow-2xl"
+            style={{
+              background: 'linear-gradient(145deg, #071B2A 0%, #0b2f4a 45%, #0297DE 100%)',
+            }}
+          >
+            {/* Faint Concentric Ripple Arcs (8-10% opacity) */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <div className="absolute -bottom-20 -left-20 w-[480px] h-[480px] rounded-full border border-white/[0.09]" />
+              <div className="absolute -bottom-32 -left-32 w-[640px] h-[640px] rounded-full border border-white/[0.08]" />
+              <div className="absolute -bottom-44 -left-44 w-[800px] h-[800px] rounded-full border border-white/[0.07]" />
             </div>
 
-            {/* Solar Worker Photo at Bottom-Right with Gradient Fade */}
-            <div className="absolute right-0 bottom-0 w-[85%] h-[74%] pointer-events-none select-none z-10 overflow-hidden">
-              {slides.map((slide, idx) => (
-                <img
-                  key={idx}
-                  src={slide.image}
-                  alt="Solar Engineer"
-                  className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ease-in-out ${
-                    currentSlide === idx ? 'opacity-90' : 'opacity-0'
-                  }`}
-                  style={{
-                    maskImage:
-                      'linear-gradient(to top, transparent 0%, black 18%, black 100%), linear-gradient(to left, black 65%, transparent 100%)',
-                    WebkitMaskImage:
-                      'linear-gradient(to top, transparent 0%, black 18%, black 100%), linear-gradient(to left, black 65%, transparent 100%)',
-                    maskComposite: 'intersect',
-                    WebkitMaskComposite: 'destination-in',
-                  }}
-                />
-              ))}
-              {/* Subtle bottom gradient tint */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#071B2A]/75 via-transparent to-transparent pointer-events-none" />
-            </div>
+            {/* Soft Blurred Cantaloupe Glow Dot (matches reference orange blur) */}
+            <div className="absolute top-28 left-20 w-16 h-16 rounded-full bg-cantaloupe-500/70 blur-xl pointer-events-none" />
 
-            {/* Bottom-Left Carousel Dots */}
-            <div className="relative z-20 flex items-center gap-2">
-              {slides.map((_, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`transition-all duration-300 cursor-pointer ${
-                    currentSlide === idx
-                      ? 'w-7 h-2 rounded-full bg-white shadow-sm'
-                      : 'w-2 h-2 rounded-full bg-white/50 hover:bg-white/80'
-                  }`}
-                  aria-label={`Slide ${idx + 1}`}
-                />
-              ))}
+            {/* Inner Glass Frame */}
+            <div className="relative z-10 w-full h-full rounded-[22px] border border-white/25 bg-gradient-to-br from-white/[0.14] to-white/[0.04] backdrop-blur-[14px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] p-7 lg:p-9 xl:p-10 flex flex-col justify-between overflow-hidden">
+              {/* Top Headline & Subtitle */}
+              <div className="relative z-20 max-w-[420px]">
+                <h2 className="font-display text-[30px] lg:text-[34px] xl:text-[36px] font-semibold text-white leading-[1.18] tracking-tight">
+                  {slides[currentSlide].headline}
+                </h2>
+                <p className="text-[14px] xl:text-[15px] text-white/80 mt-3 leading-relaxed font-sans">
+                  {slides[currentSlide].subtitle}
+                </p>
+              </div>
+
+              {/* Solar Worker Photo with Seamless Gradient Fades across full panel */}
+              <div className="absolute inset-0 w-full h-full pointer-events-none select-none z-10 overflow-hidden">
+                {slides.map((slide, idx) => (
+                  <img
+                    key={idx}
+                    src={slide.image}
+                    alt="Solar Engineer"
+                    className={`absolute inset-0 w-full h-full object-cover object-right-bottom transition-opacity duration-700 ease-in-out ${
+                      currentSlide === idx ? 'opacity-85' : 'opacity-0'
+                    }`}
+                  />
+                ))}
+                {/* Seamless multi-gradient fade overlays blending photo completely into the dark navy canvas */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#071B2A] via-[#071B2A]/90 via-45% to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#071B2A] via-[#071B2A]/50 via-20% to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#071B2A]/60 via-transparent via-25% to-transparent pointer-events-none" />
+              </div>
+
+              {/* Bottom-Left Carousel Dots */}
+              <div className="relative z-20 flex items-center gap-2">
+                {slides.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setCurrentSlide(idx)}
+                    className={`transition-all duration-300 cursor-pointer ${
+                      currentSlide === idx
+                        ? 'w-7 h-2 rounded-full bg-white shadow-sm'
+                        : 'w-2 h-2 rounded-full bg-white/50 hover:bg-white/80'
+                    }`}
+                    aria-label={`Slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
