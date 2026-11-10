@@ -272,24 +272,6 @@ export default function CustomersAdminPage() {
       ),
     },
     {
-      header: 'Partner Tier',
-      accessor: 'tier',
-      cell: (row) => (
-        <Badge
-          variant={
-            row.tier?.includes('Tier 1')
-              ? 'electric'
-              : row.tier?.includes('Tier 2')
-              ? 'cantaloupe'
-              : 'outline'
-          }
-          size="sm"
-        >
-          {row.tier}
-        </Badge>
-      ),
-    },
-    {
       header: 'Direct Email',
       accessor: 'email',
       cell: (row) => (
