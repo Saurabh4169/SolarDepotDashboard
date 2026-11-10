@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 import StatCard from '../components/StatCard';
 import ChartCard from '../components/ChartCard';
-import LatestInquiriesCard from '../components/LatestInquiriesCard';
 import RecentEnquiriesTable from '../components/RecentEnquiriesTable';
 import QuickActionsCard from '../components/QuickActionsCard';
 import Drawer, { DrawerSection } from '../components/Drawer';
@@ -248,27 +247,10 @@ export default function DashboardOverviewPage() {
           )}
         </div>
 
-        {/* Primary Row: Large Chart Card beside Latest Inquiries (24px gap) */}
+        {/* Primary Row: Large Chart Card beside Quick Actions Card */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-7 xl:col-span-8">
             <ChartCard categoryData={categoryChartData} />
-          </div>
-
-          <div className="lg:col-span-5 xl:col-span-4">
-            <LatestInquiriesCard
-              enquiries={enquiriesList}
-              onViewEnquiry={handleOpenEnquiryDrawer}
-            />
-          </div>
-        </div>
-
-        {/* Secondary Row: Recent Enquiries Table beside Quick Actions Card (24px gap) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-7 xl:col-span-8">
-            <RecentEnquiriesTable
-              enquiries={enquiriesList}
-              onViewEnquiry={handleOpenEnquiryDrawer}
-            />
           </div>
 
           <div className="lg:col-span-5 xl:col-span-4">
@@ -276,6 +258,14 @@ export default function DashboardOverviewPage() {
               onSendNotification={() => setQuickNotificationModalOpen(true)}
             />
           </div>
+        </div>
+
+        {/* Secondary Row: Recent Enquiries & Quotes Table */}
+        <div>
+          <RecentEnquiriesTable
+            enquiries={enquiriesList}
+            onViewEnquiry={handleOpenEnquiryDrawer}
+          />
         </div>
       </div>
 
