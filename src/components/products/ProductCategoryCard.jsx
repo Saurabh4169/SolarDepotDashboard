@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ChevronRight, Zap, Cpu, Layers, BatteryCharging, Grid, Wind, Activity } from 'lucide-react';
 
 const iconMap = {
@@ -14,10 +14,13 @@ const iconMap = {
 
 export default function ProductCategoryCard({ category, compact = false }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const IconComponent = iconMap[category.icon] || Zap;
 
   const handleClick = () => {
-    navigate(`/products?category=${category.slug}`);
+    const isApp = location.pathname.startsWith('/app');
+    const target = isApp ? `/app/products?category=${category.slug}` : `/products?category=${category.slug}`;
+    navigate(target);
   };
 
   if (compact) {

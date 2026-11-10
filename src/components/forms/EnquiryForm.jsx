@@ -4,12 +4,13 @@ import { Send, Upload, CheckCircle2, AlertCircle, FileCheck, ArrowRight, Home } 
 import Button from '../common/Button';
 import { useApp } from '../../context/AppContext';
 import { validateEnquiryForm } from '../../utils/validators';
-import { products } from '../../data/productsData';
+import { useLiveProducts } from '../../data/productsData';
 import { solutions } from '../../data/solutionsData';
 
 export default function EnquiryForm({ initialSelection = '', initialType = 'Product Quote' }) {
   const navigate = useNavigate();
   const { userProfile, submitEnquiry, showToast } = useApp();
+  const { products } = useLiveProducts();
 
   const [formData, setFormData] = useState({
     firstName: userProfile?.name?.split(' ')[0] || '',

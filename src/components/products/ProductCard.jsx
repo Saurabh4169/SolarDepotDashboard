@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Heart, Scale, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import Badge from '../common/Badge';
@@ -7,7 +7,11 @@ import { formatCapacity } from '../../utils/formatters';
 
 export default function ProductCard({ product, layout = 'vertical' }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toggleFavorite, isFavorite, addToCompare, removeFromCompare, isInCompare } = useApp();
+
+  const isApp = location.pathname.startsWith('/app');
+  const productUrl = isApp ? `/app/products/${product.slug}` : `/products/${product.slug}`;
 
   const favorite = isFavorite(product.id);
   const inCompare = isInCompare(product.id);
@@ -31,7 +35,7 @@ export default function ProductCard({ product, layout = 'vertical' }) {
   if (layout === 'horizontal') {
     return (
       <div
-        onClick={() => navigate(`/products/${product.slug}`)}
+        onClick={() => navigate(productUrl)}
         className="w-full bg-white rounded-2xl p-3 border border-slate-100 shadow-sm hover:shadow-md transition-all active:scale-[0.99] flex gap-3 cursor-pointer group"
       >
         <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-slate-100 shrink-0">
@@ -96,7 +100,7 @@ export default function ProductCard({ product, layout = 'vertical' }) {
 
   return (
     <div
-      onClick={() => navigate(`/products/${product.slug}`)}
+      onClick={() => navigate(productUrl)}
       className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.99] flex flex-col cursor-pointer group"
     >
       {/* Product Image Banner - Only icons visible on the photo */}

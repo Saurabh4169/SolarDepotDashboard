@@ -2,13 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, Zap, Layers, FolderGit2, FileText, ChevronRight } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { products } from '../../data/productsData';
+import { useLiveProducts } from '../../data/productsData';
 import { solutions } from '../../data/solutionsData';
 import { projects } from '../../data/projectsData';
 import { resources } from '../../data/resourcesData';
 
 export default function GlobalSearchModal() {
   const { globalSearchOpen, setGlobalSearchOpen, openPdfViewer } = useApp();
+  const { products } = useLiveProducts();
   const [query, setQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ export default function GlobalSearchModal() {
       resources: matchedResources,
       total,
     };
-  }, [query]);
+  }, [query, products]);
 
   if (!globalSearchOpen) return null;
 

@@ -41,6 +41,7 @@ export default function Drawer({
     md: 'w-full sm:w-[560px] max-w-[100vw]',
     lg: 'w-full sm:w-[720px] max-w-[100vw]',
     xl: 'w-full sm:w-[840px] max-w-[100vw]',
+    '2xl': 'w-full sm:w-[1180px] max-w-[100vw]',
   }[size] || 'w-full sm:w-[560px] max-w-[100vw]';
 
   // Mount/Unmount with smooth exit animation

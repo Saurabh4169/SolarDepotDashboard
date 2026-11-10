@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import AdminRoute from '../admin/components/AdminRoute';
 import AdminLayout from '../admin/layout/AdminLayout';
 import PageLoader from '../admin/components/PageLoader';
@@ -29,6 +29,33 @@ const UsersAdminPage = lazy(loadUsersPage);
 const NotificationsAdminPage = lazy(loadNotificationsPage);
 const SettingsAdminPage = lazy(loadSettingsPage);
 const AdminLoginPage = lazy(loadLoginPage);
+
+// Mobile App Pages
+const AppContainer = lazy(() => import('../components/layout/AppContainer'));
+const HomePage = lazy(() => import('../pages/Home/HomePage'));
+const ProductsPage = lazy(() => import('../pages/Products/ProductsPage'));
+const ProductDetailsPage = lazy(() => import('../pages/Products/ProductDetailsPage'));
+const CategoriesPage = lazy(() => import('../pages/Products/CategoriesPage'));
+const ComparePage = lazy(() => import('../pages/Products/ComparePage'));
+const SavedProductsPage = lazy(() => import('../pages/Saved/SavedProductsPage'));
+const SolutionsPage = lazy(() => import('../pages/Solutions/SolutionsPage'));
+const SolutionDetailsPage = lazy(() => import('../pages/Solutions/SolutionDetailsPage'));
+const ProjectsPage = lazy(() => import('../pages/Projects/ProjectsPage'));
+const ProjectDetailsPage = lazy(() => import('../pages/Projects/ProjectDetailsPage'));
+const ProfilePage = lazy(() => import('../pages/Profile/ProfilePage'));
+const MyEnquiriesPage = lazy(() => import('../pages/Enquiries/MyEnquiriesPage'));
+const RequestQuotePage = lazy(() => import('../pages/Enquiries/RequestQuotePage'));
+const DownloadsPage = lazy(() => import('../pages/Resources/DownloadsPage'));
+
+function MobileAppLayout() {
+  return (
+    <Suspense fallback={<PageLoader fullScreen={false} message="Loading Solar Depot..." />}>
+      <AppContainer>
+        <Outlet />
+      </AppContainer>
+    </Suspense>
+  );
+}
 
 export default function AppRoutes() {
   return (
@@ -70,6 +97,58 @@ export default function AppRoutes() {
         <Route path="settings" element={<SettingsAdminPage />} />
         <Route path="*" element={<Navigate to="/admin" replace />} />
       </Route>
+
+      {/* Mobile App Storefront */}
+      <Route path="/app" element={<MobileAppLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="products" element={<ProductsPage />} />
+        <Route path="products/:slug" element={<ProductDetailsPage />} />
+        <Route path="categories" element={<CategoriesPage />} />
+        <Route path="compare" element={<ComparePage />} />
+        <Route path="saved" element={<SavedProductsPage />} />
+        <Route path="solutions" element={<SolutionsPage />} />
+        <Route path="solutions/:slug" element={<SolutionDetailsPage />} />
+        <Route path="projects" element={<ProjectsPage />} />
+        <Route path="projects/:id" element={<ProjectDetailsPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="my-enquiries" element={<MyEnquiriesPage />} />
+        <Route path="quote" element={<RequestQuotePage />} />
+        <Route path="downloads" element={<DownloadsPage />} />
+      </Route>
+
+      {/* Mobile Aliases & Direct Product Details */}
+      <Route path="/mobile" element={<Navigate to="/app" replace />} />
+      <Route path="/store" element={<Navigate to="/app" replace />} />
+      <Route
+        path="/products/:slug"
+        element={
+          <Suspense fallback={<PageLoader fullScreen={false} message="Loading product..." />}>
+            <AppContainer>
+              <ProductDetailsPage />
+            </AppContainer>
+          </Suspense>
+        }
+      />
+      <Route
+        path="/compare"
+        element={
+          <Suspense fallback={<PageLoader fullScreen={false} message="Loading comparison..." />}>
+            <AppContainer>
+              <ComparePage />
+            </AppContainer>
+          </Suspense>
+        }
+      />
+      <Route
+        path="/saved"
+        element={
+          <Suspense fallback={<PageLoader fullScreen={false} message="Loading saved..." />}>
+            <AppContainer>
+              <SavedProductsPage />
+            </AppContainer>
+          </Suspense>
+        }
+      />
 
       {/* Direct alias redirects so typing /products, /categories etc. routes to their admin dashboard view */}
       <Route path="/products" element={<Navigate to="/admin/products" replace />} />

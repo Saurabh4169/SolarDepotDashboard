@@ -12,7 +12,7 @@ import {
   PackageOpen,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { products, getProductById } from '../../data/productsData';
+import { useLiveProducts } from '../../data/productsData';
 import Button from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import EmptyState from '../../components/common/EmptyState';
@@ -21,6 +21,7 @@ import { formatCapacity } from '../../utils/formatters';
 export default function ComparePage() {
   const navigate = useNavigate();
   const { compareList, removeFromCompare, clearCompare, addToCompare } = useApp();
+  const { products, getProductById } = useLiveProducts();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [highlightDifferences, setHighlightDifferences] = useState(true);
 

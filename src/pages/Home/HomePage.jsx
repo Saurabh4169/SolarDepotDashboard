@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import {
   Zap,
   Layers,
@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { getTimeGreeting } from '../../utils/formatters';
-import { productCategories, getFeaturedProducts } from '../../data/productsData';
+import { useLiveProducts } from '../../data/productsData';
 import { solutions } from '../../data/solutionsData';
 import { projects } from '../../data/projectsData';
 import { images } from '../../data/images';
@@ -30,9 +30,14 @@ import ScrollReveal from '../../components/common/ScrollReveal';
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isApp = location.pathname.startsWith('/app');
+  const base = isApp ? '/app' : '';
+
   const { userProfile, compareList } = useApp();
+  const { featuredProducts: liveFeatured, categories: liveCategories } = useLiveProducts();
   const greeting = getTimeGreeting();
-  const featuredProducts = getFeaturedProducts().slice(0, 4);
+  const featuredProducts = liveFeatured.slice(0, 4);
   const featuredSolutions = solutions.slice(0, 2);
   const featuredProjects = projects.slice(0, 2);
 
@@ -40,32 +45,32 @@ export default function HomePage() {
     {
       title: 'Browse Products',
       icon: Zap,
-      link: '/products',
+      link: `${base}/products`,
       color: 'bg-electric-50 text-electric-600',
     },
     {
       title: 'Compare Inverters',
       icon: Scale,
-      link: '/compare',
+      link: `${base}/compare`,
       color: 'bg-cantaloupe-50 text-cantaloupe-600',
       badge: compareList.length > 0 ? compareList.length : null,
     },
     {
       title: 'Download Datasheets',
       icon: FileDown,
-      link: '/downloads',
+      link: `${base}/downloads`,
       color: 'bg-emerald-50 text-emerald-600',
     },
     {
       title: 'Request a Quote',
       icon: MessageSquare,
-      link: '/request-quote',
+      link: `${base}/quote`,
       color: 'bg-purple-50 text-purple-600',
     },
     {
       title: 'Contact Support',
       icon: Headphones,
-      link: '/support',
+      link: `${base}/support`,
       color: 'bg-slate-100 text-slate-700',
     },
   ];
@@ -197,10 +202,10 @@ export default function HomePage() {
             eyebrow="Portfolio"
             title="Product Categories"
             actionText="View All"
-            actionLink="/categories"
+            actionLink={`${base}/categories`}
           />
           <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-1">
-            {productCategories.map((category) => (
+            {liveCategories.map((category) => (
               <ProductCategoryCard
                 key={category.slug}
                 category={category}
@@ -217,7 +222,7 @@ export default function HomePage() {
           eyebrow="Engineered Systems"
           title="Featured Inverters"
           actionText="All Models"
-          actionLink="/products"
+          actionLink={`${base}/products`}
         />
         <div className="grid grid-cols-2 gap-3">
           {featuredProducts.map((product, idx) => (

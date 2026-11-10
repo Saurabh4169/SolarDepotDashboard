@@ -1,21 +1,71 @@
 import { getStorage, setStorage, delay } from './storageHelper.js';
-import { products as initialProducts } from '../../data/productsData.js';
+import { products as initialProducts, featuredProductSlugs } from '../../data/productsData.js';
 
 const STORAGE_KEY = 'solardepot_admin_products';
 
 const ensureSeeded = () => {
   const existing = getStorage(STORAGE_KEY, null);
   if (!existing || !Array.isArray(existing) || existing.length === 0) {
-    const formatted = initialProducts.map((p) => ({
-      ...p,
-      active: p.active !== undefined ? p.active : true,
-      createdAt: p.createdAt || '2026-10-01T08:00:00.000Z',
-      updatedAt: p.updatedAt || '2026-11-01T12:00:00.000Z',
-    }));
+    const formatted = initialProducts.map((p) => {
+      const isFeat = featuredProductSlugs ? featuredProductSlugs.includes(p.slug) : false;
+      const isActive = p.isActive !== undefined ? p.isActive : (p.active !== undefined ? p.active : true);
+      return {
+        ...p,
+        isActive,
+        active: isActive,
+        featured: p.featured !== undefined ? p.featured : isFeat,
+        gallery: p.gallery && p.gallery.length > 0 ? p.gallery : (p.image ? [p.image] : []),
+        highlights: p.highlights || [],
+        specGroups: p.specGroups || [
+          {
+            label: 'Electrical',
+            specs: [
+              { label: 'Rated Power', value: `${p.capacityKw || 5} kW` },
+              { label: 'Max Efficiency', value: `${p.efficiency || 98}%` },
+            ],
+          },
+          {
+            label: 'Mechanical',
+            specs: [
+              { label: 'Protection Rating', value: p.enclosure || 'IP65' },
+            ],
+          },
+        ],
+        datasheetSize: p.datasheetSize || '',
+        datasheetUrl: p.datasheetUrl || '',
+        createdAt: p.createdAt || '2026-10-01T08:00:00.000Z',
+        updatedAt: p.updatedAt || '2026-11-01T12:00:00.000Z',
+      };
+    });
     setStorage(STORAGE_KEY, formatted);
     return formatted;
   }
-  return existing;
+
+  // Ensure any existing stored products have normalized fields
+  let modified = false;
+  const normalized = existing.map((p) => {
+    const isActive = p.isActive !== undefined ? p.isActive : (p.active !== undefined ? p.active : true);
+    const isFeat = p.featured !== undefined ? p.featured : (featuredProductSlugs ? featuredProductSlugs.includes(p.slug) : false);
+    const gallery = p.gallery && p.gallery.length > 0 ? p.gallery : (p.image ? [p.image] : []);
+    if (p.isActive === undefined || p.featured === undefined || !p.gallery) {
+      modified = true;
+    }
+    return {
+      ...p,
+      isActive,
+      active: isActive,
+      featured: isFeat,
+      gallery,
+      highlights: p.highlights || [],
+      specGroups: p.specGroups || [],
+      datasheetSize: p.datasheetSize || '',
+      datasheetUrl: p.datasheetUrl || '',
+    };
+  });
+  if (modified) {
+    setStorage(STORAGE_KEY, normalized);
+  }
+  return normalized;
 };
 
 export const productsService = {
@@ -58,7 +108,7 @@ export const productsService = {
     // Filter by status
     if (status && status !== 'All') {
       const isActive = status === 'Active';
-      list = list.filter((p) => Boolean(p.active) === isActive);
+      list = list.filter((p) => (p.isActive !== undefined ? Boolean(p.isActive) : Boolean(p.active)) === isActive);
     }
 
     // Sorting
@@ -103,7 +153,7 @@ export const productsService = {
   async create(data) {
     await delay(180);
     const list = ensureSeeded();
-    const newId = `p-${Date.now().toString(36)}`;
+    const newId = data.id || `p-${Date.now().toString(36)}`;
     const slug =
       data.slug ||
       (data.name || 'product')
@@ -111,11 +161,17 @@ export const productsService = {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '');
 
+    const isActive = data.isActive !== undefined ? Boolean(data.isActive) : (data.active !== undefined ? Boolean(data.active) : true);
+    const gallery = Array.isArray(data.gallery) && data.gallery.length > 0
+      ? data.gallery
+      : (data.image ? [data.image] : []);
+    const coverImage = gallery[0] || data.image || '/images/products/inverter-5kw.jpg';
+
     const newProduct = {
       id: newId,
       slug,
       name: data.name,
-      model: data.model || `SD-${Math.floor(1000 + Math.random() * 9000)}`,
+      model: data.model,
       category: data.category || 'Single-Phase String Inverters',
       categorySlug:
         data.categorySlug ||
@@ -124,29 +180,23 @@ export const productsService = {
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)/g, ''),
       phase: data.phase || 'Single-Phase',
-      capacityKw: parseFloat(data.capacityKw) || 5,
-      efficiency: parseFloat(data.efficiency) || 98.0,
+      capacityKw: parseFloat(data.capacityKw) || 0,
+      efficiency: parseFloat(data.efficiency) || 0,
       warranty: data.warranty || '10 Years',
       enclosure: data.enclosure || 'IP65',
-      datasheetSize: data.datasheetSize || '1.8 MB',
-      rating: data.rating || 5.0,
-      reviewCount: data.reviewCount || 0,
-      shortDesc: data.shortDesc || data.name,
+      datasheetSize: data.datasheetSize || '',
+      datasheetUrl: data.datasheetUrl || '',
+      rating: data.rating !== undefined ? Number(data.rating) : 5.0,
+      reviewCount: data.reviewCount !== undefined ? Number(data.reviewCount) : 0,
+      shortDesc: data.shortDesc || '',
       description: data.description || '',
-      image: data.image || '/images/products/inverter-5kw.jpg',
-      gallery: data.gallery || [data.image || '/images/products/inverter-5kw.jpg'],
-      highlights: data.highlights || ['Dual MPPT design', 'IP65 rated enclosure'],
-      specGroups: data.specGroups || [
-        {
-          label: 'Electrical',
-          specs: [
-            { label: 'Rated Power', value: `${data.capacityKw || 5} kW` },
-            { label: 'Efficiency', value: `${data.efficiency || 98}%` },
-            { label: 'Phase', value: data.phase || 'Single-Phase' },
-          ],
-        },
-      ],
-      active: data.active !== undefined ? data.active : true,
+      image: coverImage,
+      gallery,
+      highlights: Array.isArray(data.highlights) ? data.highlights : [],
+      specGroups: Array.isArray(data.specGroups) ? data.specGroups : [],
+      featured: Boolean(data.featured),
+      isActive,
+      active: isActive,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -162,11 +212,21 @@ export const productsService = {
     const index = list.findIndex((p) => p.id === id);
     if (index === -1) throw new Error(`Product with ID "${id}" not found`);
 
+    const current = list[index];
+    const isActive = updates.isActive !== undefined ? Boolean(updates.isActive) : (updates.active !== undefined ? Boolean(updates.active) : current.isActive !== undefined ? current.isActive : current.active);
+
+    const gallery = Array.isArray(updates.gallery) ? updates.gallery : current.gallery;
+    const coverImage = (gallery && gallery[0]) || updates.image || current.image;
+
     const updatedItem = {
-      ...list[index],
+      ...current,
       ...updates,
-      capacityKw: updates.capacityKw !== undefined ? parseFloat(updates.capacityKw) || 0 : list[index].capacityKw,
-      efficiency: updates.efficiency !== undefined ? parseFloat(updates.efficiency) || 0 : list[index].efficiency,
+      capacityKw: updates.capacityKw !== undefined ? parseFloat(updates.capacityKw) || 0 : current.capacityKw,
+      efficiency: updates.efficiency !== undefined ? parseFloat(updates.efficiency) || 0 : current.efficiency,
+      image: coverImage,
+      gallery,
+      isActive,
+      active: isActive,
       updatedAt: new Date().toISOString(),
     };
 
@@ -180,7 +240,9 @@ export const productsService = {
     const list = ensureSeeded();
     const item = list.find((p) => p.id === id);
     if (!item) throw new Error(`Product with ID "${id}" not found`);
-    item.active = !item.active;
+    const newStatus = !(item.isActive !== undefined ? item.isActive : item.active);
+    item.isActive = newStatus;
+    item.active = newStatus;
     item.updatedAt = new Date().toISOString();
     setStorage(STORAGE_KEY, list);
     return item;

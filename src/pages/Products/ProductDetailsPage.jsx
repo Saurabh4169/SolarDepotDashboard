@@ -12,7 +12,7 @@ import {
   Cpu,
   PackageOpen,
 } from 'lucide-react';
-import { getProductBySlug, getRelatedProducts, products } from '../../data/productsData';
+import { useLiveProducts, getRelatedProducts } from '../../data/productsData';
 import { resources } from '../../data/resourcesData';
 import { useApp } from '../../context/AppContext';
 import ProductGallery from '../../components/products/ProductGallery';
@@ -36,6 +36,7 @@ export default function ProductDetailsPage() {
     showToast,
   } = useApp();
 
+  const { getProductBySlug } = useLiveProducts();
   const product = getProductBySlug(slug);
 
   if (!product) {
@@ -81,7 +82,7 @@ export default function ProductDetailsPage() {
     <div className="flex-1 flex flex-col min-h-full animate-fade-in relative">
       <div className="p-4 space-y-5 flex-1 pb-6">
         {/* Top Gallery */}
-      <ProductGallery images={product.gallery} name={product.name} />
+        <ProductGallery images={product.gallery && product.gallery.length > 0 ? product.gallery : [product.image]} name={product.name} />
 
       {/* Product Title & Basic Info */}
       <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm space-y-3">
@@ -136,29 +137,31 @@ export default function ProductDetailsPage() {
       </div>
 
       {/* Datasheet & Documentation Card */}
-      <div className="p-3.5 rounded-2xl bg-gradient-to-r from-iceblue to-paleblue/60 border border-electric-200/80 flex items-center justify-between">
-        <div className="flex items-center gap-2.5 min-w-0 pr-2">
-          <div className="w-9 h-9 rounded-xl bg-electric-500 text-white flex items-center justify-center shrink-0 shadow-glow">
-            <FileDown className="w-5 h-5" />
+      {(product.datasheetUrl || product.datasheetSize) && (
+        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-iceblue to-paleblue/60 border border-electric-200/80 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 min-w-0 pr-2">
+            <div className="w-9 h-9 rounded-xl bg-electric-500 text-white flex items-center justify-center shrink-0 shadow-glow">
+              <FileDown className="w-5 h-5" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-navy truncate">
+                Technical Datasheet (PDF)
+              </h4>
+              <p className="text-[10px] text-slate-500 font-mono">
+                {product.model} {product.datasheetSize ? `• ${product.datasheetSize}` : ''}
+              </p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <h4 className="text-xs font-bold text-navy truncate">
-              Technical Datasheet (PDF)
-            </h4>
-            <p className="text-[10px] text-slate-500 font-mono">
-              {product.model} • {product.datasheetSize}
-            </p>
-          </div>
-        </div>
 
-        <Button
-          variant="secondary"
-          size="xs"
-          onClick={handleDatasheetPreview}
-        >
-          View PDF
-        </Button>
-      </div>
+          <Button
+            variant="secondary"
+            size="xs"
+            onClick={handleDatasheetPreview}
+          >
+            View PDF
+          </Button>
+        </div>
+      )}
 
       {/* Grouped Specifications & Highlights */}
       <div>

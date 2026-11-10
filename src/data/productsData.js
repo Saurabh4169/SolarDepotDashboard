@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo } from 'react';
 import { images } from './images';
 
 export const productCategories = [
@@ -589,20 +590,118 @@ export const featuredProductSlugs = [
   'sd-energy-meter',
 ];
 
-export const getFeaturedProducts = () =>
-  products.filter((p) => featuredProductSlugs.includes(p.slug));
+const STORAGE_KEY = 'solardepot_admin_products';
 
-export const getProductById = (id) => products.find((p) => p.id === id);
+export const getAdminProducts = () => {
+  if (typeof window === 'undefined') return products;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    // fallback to static products
+  }
+  return products;
+};
 
-export const getProductBySlug = (slug) => products.find((p) => p.slug === slug);
+export const getActiveProducts = () => {
+  const all = getAdminProducts();
+  return all.filter((p) => {
+    if (p.isActive !== undefined) return Boolean(p.isActive);
+    if (p.active !== undefined) return Boolean(p.active);
+    return true;
+  });
+};
 
-export const getProductsByCategory = (catSlug) =>
-  catSlug === 'all' || !catSlug
-    ? products
-    : products.filter((p) => p.categorySlug === catSlug);
+// getProducts() alias for active products as required by spec
+export const getProducts = () => getActiveProducts();
 
-export const getRelatedProducts = (product, count = 3) =>
-  products
+export const getFeaturedProducts = () => {
+  const active = getActiveProducts();
+  return active.filter((p) => {
+    if (p.featured !== undefined) return Boolean(p.featured);
+    return featuredProductSlugs.includes(p.slug);
+  });
+};
+
+export const getProductById = (id) => {
+  const active = getActiveProducts();
+  return active.find((p) => p.id === id);
+};
+
+export const getProductBySlug = (slug) => {
+  const active = getActiveProducts();
+  return active.find((p) => p.slug === slug);
+};
+
+export const getProductsByCategory = (catSlug) => {
+  const active = getActiveProducts();
+  return catSlug === 'all' || !catSlug
+    ? active
+    : active.filter((p) => p.categorySlug === catSlug);
+};
+
+export const getRelatedProducts = (product, count = 3) => {
+  if (!product) return [];
+  const active = getActiveProducts();
+  return active
     .filter((p) => p.categorySlug === product.categorySlug && p.id !== product.id)
     .slice(0, count);
+};
+
+export const getCategoriesWithCounts = () => {
+  const active = getActiveProducts();
+  return productCategories.map((cat) => ({
+    ...cat,
+    count: active.filter((p) => p.categorySlug === cat.slug || p.category === cat.name).length,
+  }));
+};
+
+export function useLiveProducts() {
+  const [items, setItems] = useState(() => getActiveProducts());
+
+  useEffect(() => {
+    const update = () => {
+      setItems(getActiveProducts());
+    };
+
+    window.addEventListener('storage', update);
+    window.addEventListener('solardepot_storage_update', update);
+
+    return () => {
+      window.removeEventListener('storage', update);
+      window.removeEventListener('solardepot_storage_update', update);
+    };
+  }, []);
+
+  const featured = useMemo(
+    () =>
+      items.filter((p) => {
+        if (p.featured !== undefined) return Boolean(p.featured);
+        return featuredProductSlugs.includes(p.slug);
+      }),
+    [items]
+  );
+
+  const categories = useMemo(
+    () =>
+      productCategories.map((cat) => ({
+        ...cat,
+        count: items.filter((p) => p.categorySlug === cat.slug || p.category === cat.name).length,
+      })),
+    [items]
+  );
+
+  return {
+    products: items,
+    featuredProducts: featured,
+    categories,
+    getProductById: (id) => items.find((p) => p.id === id),
+    getProductBySlug: (slug) => items.find((p) => p.slug === slug),
+  };
+}
 

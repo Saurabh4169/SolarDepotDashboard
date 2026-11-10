@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart, Trash2, Scale, ArrowRight, PackageOpen } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { products, getProductById } from '../../data/productsData';
+import { useLiveProducts } from '../../data/productsData';
 import ProductCard from '../../components/products/ProductCard';
 import EmptyState from '../../components/common/EmptyState';
 import Button from '../../components/common/Button';
@@ -10,6 +10,7 @@ import Button from '../../components/common/Button';
 export default function SavedProductsPage() {
   const navigate = useNavigate();
   const { favorites, toggleFavorite, compareList, addToCompare } = useApp();
+  const { getProductById } = useLiveProducts();
 
   const savedProducts = favorites
     .map((id) => getProductById(id))

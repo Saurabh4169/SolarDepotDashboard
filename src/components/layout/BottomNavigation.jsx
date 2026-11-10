@@ -1,14 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Home, Zap, Layers, FolderGit2, User } from 'lucide-react';
 
 export default function BottomNavigation() {
+  const location = useLocation();
+  const isApp = location.pathname.startsWith('/app');
+  const base = isApp ? '/app' : '';
+
   const navItems = [
-    { name: 'Home', path: '/', icon: Home, end: true },
-    { name: 'Products', path: '/products', icon: Zap, end: false },
-    { name: 'Solutions', path: '/solutions', icon: Layers, end: false, isCenter: true },
-    { name: 'Projects', path: '/projects', icon: FolderGit2, end: false },
-    { name: 'Profile', path: '/profile', icon: User, end: false },
+    { name: 'Home', path: isApp ? '/app' : '/', icon: Home, end: true },
+    { name: 'Products', path: `${base}/products`, icon: Zap, end: false },
+    { name: 'Solutions', path: `${base}/solutions`, icon: Layers, end: false, isCenter: true },
+    { name: 'Projects', path: `${base}/projects`, icon: FolderGit2, end: false },
+    { name: 'Profile', path: `${base}/profile`, icon: User, end: false },
   ];
 
   return (

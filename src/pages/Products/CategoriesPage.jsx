@@ -1,9 +1,11 @@
 import React from 'react';
-import { productCategories } from '../../data/productsData';
+import { useLiveProducts } from '../../data/productsData';
 import ProductCategoryCard from '../../components/products/ProductCategoryCard';
 import { Layers } from 'lucide-react';
 
 export default function CategoriesPage() {
+  const { categories } = useLiveProducts();
+
   return (
     <div className="p-4 pb-8 space-y-4 animate-fade-in">
       <div className="flex items-center justify-between">
@@ -16,12 +18,12 @@ export default function CategoriesPage() {
           </h2>
         </div>
         <span className="text-xs font-mono text-slate-400">
-          {productCategories.length} Categories
+          {categories.length} Categories
         </span>
       </div>
 
       <div className="space-y-3">
-        {productCategories.map((cat) => (
+        {categories.map((cat) => (
           <ProductCategoryCard key={cat.slug} category={cat} compact={false} />
         ))}
       </div>

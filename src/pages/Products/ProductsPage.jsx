@@ -9,7 +9,7 @@ import {
   PackageOpen,
   ArrowRight,
 } from 'lucide-react';
-import { products, productCategories } from '../../data/productsData';
+import { useLiveProducts } from '../../data/productsData';
 import { useApp } from '../../context/AppContext';
 import SearchBar from '../../components/common/SearchBar';
 import ProductCard from '../../components/products/ProductCard';
@@ -20,6 +20,7 @@ import Button from '../../components/common/Button';
 import ScrollReveal from '../../components/common/ScrollReveal';
 
 export default function ProductsPage() {
+  const { products, categories: productCategories } = useLiveProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { compareList, clearCompare } = useApp();
@@ -121,7 +122,7 @@ export default function ProductsPage() {
     });
 
     return list;
-  }, [searchQuery, selectedCategory, selectedPhase, selectedCapacity, sortBy]);
+  }, [searchQuery, selectedCategory, selectedPhase, selectedCapacity, sortBy, products]);
 
   return (
     <div className="p-4 pb-20 space-y-3.5 animate-fade-in relative">

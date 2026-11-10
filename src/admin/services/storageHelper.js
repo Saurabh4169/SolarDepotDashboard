@@ -27,6 +27,12 @@ export const setStorage = (key, value) => {
         detail: { key, value },
       })
     );
+    // Dispatch synthetic storage event so listeners for 'storage' also fire in current tab
+    try {
+      window.dispatchEvent(new StorageEvent('storage', { key, newValue: JSON.stringify(value) }));
+    } catch {
+      window.dispatchEvent(new Event('storage'));
+    }
     return true;
   } catch (err) {
     console.error(`[AdminStorage] Failed to write "${key}":`, err);
@@ -42,6 +48,11 @@ export const removeStorage = (key) => {
         detail: { key, value: null },
       })
     );
+    try {
+      window.dispatchEvent(new StorageEvent('storage', { key, newValue: null }));
+    } catch {
+      window.dispatchEvent(new Event('storage'));
+    }
   } catch (err) {
     console.error(`[AdminStorage] Failed to remove "${key}":`, err);
   }
