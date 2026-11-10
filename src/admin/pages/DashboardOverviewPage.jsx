@@ -202,8 +202,8 @@ export default function DashboardOverviewPage() {
 
       {/* Main Content: Starts 32px below header (mt-8) */}
       <div className="mt-8 space-y-6">
-        {/* Row of 5 KPI Cards (24px gap) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        {/* Row of 5 KPI Cards (reduced size, 16px gap) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {isLoading ? (
             Array.from({ length: 5 }).map((_, i) => <StatCardSkeleton key={i} />)
           ) : (

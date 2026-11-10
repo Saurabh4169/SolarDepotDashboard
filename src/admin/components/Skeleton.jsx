@@ -10,14 +10,14 @@ export function Skeleton({ className = '' }) {
 
 export function StatCardSkeleton() {
   return (
-    <div className="glass-light rounded-[20px] p-6 border border-[#0297DE]/14 shadow-soft flex flex-col justify-between h-40">
+    <div className="glass-light rounded-2xl p-4 border border-[#0297DE]/14 shadow-soft flex flex-col justify-between h-32">
       <div className="flex items-center justify-between">
-        <Skeleton className="w-10 h-10 rounded-xl" />
+        <Skeleton className="w-9 h-9 rounded-xl" />
       </div>
-      <div className="space-y-2 mt-4">
-        <Skeleton className="w-16 h-3 rounded" />
-        <Skeleton className="w-24 h-8 rounded-md" />
-        <Skeleton className="w-32 h-3.5 rounded" />
+      <div className="space-y-1.5 mt-3">
+        <Skeleton className="w-14 h-2.5 rounded" />
+        <Skeleton className="w-20 h-6 rounded-md" />
+        <Skeleton className="w-28 h-3 rounded" />
       </div>
     </div>
   );
