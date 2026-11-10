@@ -114,9 +114,13 @@ export default function AdminSidebar() {
         {/* Content Container (above glossy background) */}
         <div className="relative z-10 flex flex-col h-full justify-between">
           {/* Top Logo Bar */}
-          <div className="h-16 px-5 flex items-center justify-between border-b border-white/[0.08] shrink-0">
-            <div className="flex items-center gap-3 overflow-hidden">
-              <Logo size="sm" light={true} linkTo="/admin" />
+          <div
+            className={`h-16 flex items-center border-b border-white/[0.08] shrink-0 transition-all duration-300 ${
+              sidebarCollapsed ? 'justify-center px-0' : 'justify-between px-5'
+            }`}
+          >
+            <div className={`flex items-center gap-3 ${sidebarCollapsed ? 'justify-center' : 'overflow-hidden'}`}>
+              <Logo size="sm" light={true} linkTo="/admin" iconOnly={sidebarCollapsed} />
             </div>
 
             {/* Mobile close button */}
@@ -203,15 +207,19 @@ export default function AdminSidebar() {
           </div>
 
           {/* Bottom User Card with Collapse Chevron */}
-          <div className="p-3.5 border-t border-white/[0.08] shrink-0">
+          <div className={`${sidebarCollapsed ? 'px-2 py-3' : 'p-3.5'} border-t border-white/[0.08] shrink-0 transition-all duration-200`}>
             <div
               className={`
-                flex items-center justify-between p-2.5 rounded-xl glass-dark border border-white/[0.12]
-                ${sidebarCollapsed ? 'flex-col gap-2 p-2' : ''}
+                glass-dark border border-white/[0.12] rounded-xl transition-all duration-200
+                ${
+                  sidebarCollapsed
+                    ? 'flex flex-col items-center justify-center p-2.5 gap-2.5 w-full'
+                    : 'flex items-center justify-between p-2.5'
+                }
               `}
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="relative shrink-0">
+              <div className={`flex items-center gap-3 min-w-0 ${sidebarCollapsed ? 'justify-center' : ''}`}>
+                <div className="relative shrink-0 flex items-center justify-center">
                   <img
                     src={
                       adminUser?.avatar ||
@@ -239,7 +247,14 @@ export default function AdminSidebar() {
               <button
                 type="button"
                 onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                className="hidden lg:flex p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition-colors shrink-0"
+                className={`
+                  hidden lg:flex items-center justify-center rounded-lg transition-colors shrink-0
+                  ${
+                    sidebarCollapsed
+                      ? 'w-7 h-7 text-electric-300 hover:text-white hover:bg-white/10'
+                      : 'p-1.5 text-slate-300 hover:text-white hover:bg-white/10'
+                  }
+                `}
                 title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               >

@@ -10,7 +10,10 @@ export function AdminProvider({ children }) {
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsedState] = useState(() => {
     try {
-      return window.localStorage.getItem('solardepot_sidebar_collapsed') === 'true';
+      return (
+        window.localStorage.getItem('solardepot_sidebar_collapsed') === 'true' ||
+        new URLSearchParams(window.location.search).get('collapsed') === 'true'
+      );
     } catch {
       return false;
     }
