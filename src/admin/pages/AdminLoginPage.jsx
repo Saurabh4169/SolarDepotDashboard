@@ -137,22 +137,9 @@ export default function AdminLoginPage() {
   const isFormValid = email.trim().length > 0 && password.length > 0;
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-[#EDF2F7] flex items-center justify-center p-3 sm:p-6 lg:p-8 select-none overflow-x-hidden overflow-y-auto">
+    <div className="relative min-h-[100dvh] w-full bg-white select-none overflow-x-hidden">
       {/* Scoped CSS animations & WebKit Autofill Overrides */}
       <style>{`
-        @keyframes loginCardEnter {
-          from {
-            opacity: 0;
-            transform: translateY(14px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-login-card {
-          animation: loginCardEnter 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
         @keyframes subtleZoom {
           0% {
             transform: scale(1.0);
@@ -165,11 +152,6 @@ export default function AdminLoginPage() {
           animation: subtleZoom 8s ease-out forwards;
         }
         @media (prefers-reduced-motion: reduce) {
-          .animate-login-card {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-          }
           .animate-subtle-zoom {
             animation: none !important;
             transform: none !important;
@@ -185,10 +167,10 @@ export default function AdminLoginPage() {
         }
       `}</style>
 
-      {/* Main Centered 2-Column Split Card */}
-      <div className="relative z-10 w-full max-w-[1140px] bg-white rounded-[28px] sm:rounded-[32px] shadow-[0_20px_50px_-12px_rgba(7,27,42,0.14),0_0_0_1px_rgba(7,27,42,0.05)] overflow-hidden grid grid-cols-1 lg:grid-cols-2 animate-login-card my-auto">
-        {/* LEFT COLUMN: Clean White Form Area */}
-        <div className="p-6 sm:p-10 lg:p-12 flex flex-col justify-between bg-white relative min-w-0">
+      {/* Full-Screen 2-Column Split Layout */}
+      <div className="w-full min-h-[100dvh] grid grid-cols-1 lg:grid-cols-2">
+        {/* LEFT COLUMN: Clean White Form Area (Full Bleed Left Half) */}
+        <div className="p-6 sm:p-10 lg:p-12 xl:p-16 flex flex-col justify-between bg-white relative min-w-0 min-h-[100dvh]">
           {/* Header Row: Logo & Status Badge */}
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -391,11 +373,11 @@ export default function AdminLoginPage() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Deep Dark Navy Showcase with Photo & Metrics */}
+        {/* RIGHT COLUMN: Deep Dark Navy Showcase with Photo & Metrics (Full Bleed Right Half) */}
         <div
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className="hidden lg:flex flex-col justify-between p-8 xl:p-10 relative bg-[#071B2A] text-white select-none overflow-hidden"
+          className="hidden lg:flex flex-col justify-between p-8 xl:p-12 relative bg-[#071B2A] text-white select-none overflow-hidden min-h-[100dvh]"
           style={{
             background:
               'linear-gradient(155deg, #071B2A 0%, #092235 50%, #05141f 100%)',
@@ -431,8 +413,8 @@ export default function AdminLoginPage() {
           </div>
 
           {/* Center Card Presentation with Solar Photo */}
-          <div className="relative z-10 my-auto py-6">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/15 h-[340px] xl:h-[370px]">
+          <div className="relative z-10 my-auto py-6 max-w-[540px] xl:max-w-[580px] w-full mx-auto">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/15 h-[360px] xl:h-[400px]">
               {/* Photo Slides */}
               {slides.map((slide, idx) => (
                 <img
@@ -463,7 +445,7 @@ export default function AdminLoginPage() {
                 </div>
 
                 {/* Main Headline */}
-                <h2 className="font-display text-[22px] xl:text-[25px] font-bold text-white leading-tight tracking-tight [text-shadow:0_2px_10px_rgba(0,0,0,0.5)]">
+                <h2 className="font-display text-[22px] xl:text-[26px] font-bold text-white leading-tight tracking-tight [text-shadow:0_2px_10px_rgba(0,0,0,0.5)]">
                   {slides[currentSlide].headline}
                 </h2>
 
