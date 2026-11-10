@@ -41,7 +41,7 @@ export default function AdminLayout() {
       <AdminSidebar />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden bg-[#F7FAFC] relative">
+      <div className="flex-1 flex flex-col h-full min-w-0 overflow-hidden bg-admin-page relative">
         {/* Sleek electric progress bar active only during pending transitions */}
         {isTransitionPending && (
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-electric-400 via-cantaloupe-500 to-electric-600 animate-pulse z-40 pointer-events-none" />
@@ -51,7 +51,7 @@ export default function AdminLayout() {
         <AdminHeader />
 
         {/* Scrollable Viewport Content: Dedicated container scroll with instant reset */}
-        <main ref={mainContentRef} className="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-6 lg:p-8 bg-[#F7FAFC] flex flex-col">
+        <main ref={mainContentRef} className="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-6 lg:p-8 bg-transparent flex flex-col">
           <div className="w-full max-w-[1600px] mx-auto flex-1 flex flex-col">
             <ErrorBoundary>
               {/* Suspense is strictly scoped to the content area using realistic layout skeleton */}

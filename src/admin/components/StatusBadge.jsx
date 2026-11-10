@@ -5,24 +5,33 @@ export default function StatusBadge({ status, size = 'sm', className = '' }) {
 
   const normalized = String(status).trim();
 
-  let colorClasses = 'bg-electric-50 text-electric-700 border-electric-200';
-  let dotColor = 'bg-electric-500';
+  let colorClasses = 'bg-[#E6F3FB] text-[#0297DE] border-[#0297DE]/20';
+  let dotColor = 'bg-[#0297DE]';
 
-  if (['Quote Prepared', 'Paid', 'Active', 'Operational', 'Completed', 'Verified'].includes(normalized)) {
-    colorClasses = 'bg-emerald-50 text-emerald-700 border-emerald-200';
-    dotColor = 'bg-emerald-500';
-  } else if (['Pending', 'In Review', 'Engineering Review', 'Submitted (Demo)'].includes(normalized)) {
-    colorClasses = 'bg-amber-50 text-amber-700 border-amber-200';
-    dotColor = 'bg-amber-500';
-  } else if (['Rejected', 'Closed', 'Inactive', 'Critical'].includes(normalized)) {
-    colorClasses = 'bg-rose-50 text-rose-700 border-rose-200';
-    dotColor = 'bg-rose-500';
-  } else if (['Replied', 'Archived', 'Draft'].includes(normalized)) {
-    colorClasses = 'bg-slate-100 text-slate-700 border-slate-200';
-    dotColor = 'bg-slate-400';
-  } else if (['New', 'Standard'].includes(normalized)) {
-    colorClasses = 'bg-electric-50 text-electric-700 border-electric-200';
-    dotColor = 'bg-electric-500';
+  if (['Active', 'Operational', 'Completed', 'Verified', 'Paid'].includes(normalized)) {
+    // Emerald
+    colorClasses = 'bg-[#E5F7EE] text-[#059669] border-[#10B981]/25';
+    dotColor = 'bg-[#10B981]';
+  } else if (['In Review', 'Engineering Review', 'Processing'].includes(normalized)) {
+    // Amber
+    colorClasses = 'bg-[#FFFBEB] text-[#D97706] border-[#F59E0B]/25';
+    dotColor = 'bg-[#F59E0B]';
+  } else if (['Pending', 'Quote Prepared', 'Quote', 'Submitted', 'Submitted (Demo)'].includes(normalized)) {
+    // Cantaloupe
+    colorClasses = 'bg-[#FFEDE6] text-[#FC734D] border-[#FC734D]/25';
+    dotColor = 'bg-[#FC734D]';
+  } else if (['Rejected', 'Critical', 'Failed'].includes(normalized)) {
+    // Rose
+    colorClasses = 'bg-[#FFF1F2] text-[#E11D48] border-[#F43F5E]/25';
+    dotColor = 'bg-[#F43F5E]';
+  } else if (['Closed', 'Inactive', 'Replied', 'Archived', 'Draft'].includes(normalized)) {
+    // Slate
+    colorClasses = 'bg-[#F1F5F9] text-[#64748B] border-[#94A3B8]/25';
+    dotColor = 'bg-[#94A3B8]';
+  } else if (['New', 'Standard', 'Open'].includes(normalized)) {
+    // Electric
+    colorClasses = 'bg-[#E6F3FB] text-[#0297DE] border-[#0297DE]/20';
+    dotColor = 'bg-[#0297DE]';
   }
 
   const sizeClasses = {

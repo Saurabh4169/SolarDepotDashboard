@@ -150,7 +150,7 @@ export default function Drawer({
       {/* 1. Backdrop Overlay (Covers entire screen, header & sidebar included) */}
       <div
         className={`
-          fixed inset-0 bg-[#02070A]/55 backdrop-blur-[2px] transition-opacity duration-300 ease-out
+          fixed inset-0 bg-[#02070A]/55 backdrop-blur-[4px] transition-opacity duration-300 ease-out
           ${isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
         `}
         onClick={handleRequestClose}
@@ -175,11 +175,11 @@ export default function Drawer({
         onClick={(e) => e.stopPropagation()}
       >
         {/* ======================================================== */}
-        {/* FIXED ZONE 1: HEADER (Highlander Glossy Navy Gradient)   */}
+        {/* FIXED ZONE 1: HEADER (Dark Gradient with Orange Line)    */}
         {/* ======================================================== */}
         <div
           style={{
-            background: 'linear-gradient(135deg, #071B2A 0%, #0b2f4a 60%, #0278b8 100%)',
+            background: 'linear-gradient(135deg, #02070A 0%, #071B2A 55%, #0b2436 100%)',
           }}
           className="relative px-6 py-5 shrink-0 select-none overflow-hidden border-b border-white/[0.08]"
         >
@@ -192,10 +192,13 @@ export default function Drawer({
             }}
           />
 
+          {/* Thin Glowing Cantaloupe Line at Header Bottom Edge */}
+          <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-cantaloupe-500/80 via-cantaloupe-400/40 to-transparent pointer-events-none" />
+
           <div className="relative z-10 flex items-start justify-between gap-4">
             <div className="min-w-0 flex-1">
               {chip && (
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#0297DE]/20 border border-[#0297DE]/30 text-[#38bdf8] text-[11px] font-semibold tracking-wider uppercase mb-1.5 tabular-nums">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full glass-dark border border-white/20 text-electric-300 text-[11px] font-semibold tracking-wider uppercase mb-1.5 tabular-nums">
                   {chip}
                 </div>
               )}
@@ -229,10 +232,10 @@ export default function Drawer({
         </div>
 
         {/* ======================================================== */}
-        {/* FIXED ZONE 3: FOOTER (Sticky at bottom, never overlaps) */}
+        {/* FIXED ZONE 3: FOOTER (Sticky at bottom, glass-light)    */}
         {/* ======================================================== */}
         {footer && (
-          <div className="px-6 py-4 bg-white border-t border-[#0297DE]/12 shadow-[0_-4px_16px_rgba(0,0,0,0.04)] shrink-0 z-20">
+          <div className="px-6 py-4 glass-light border-t border-[#0297DE]/14 shadow-[0_-4px_16px_rgba(0,0,0,0.04)] shrink-0 z-20">
             {footer}
           </div>
         )}
@@ -289,10 +292,10 @@ export default function Drawer({
 export function DrawerSection({ title, action, children, className = '' }) {
   return (
     <div
-      className={`bg-white rounded-2xl border border-[#0297DE]/12 p-5 shadow-soft space-y-3.5 ${className}`}
+      className={`glass-light rounded-[20px] border border-[#0297DE]/14 p-5 shadow-soft space-y-3.5 ${className}`}
     >
       {title && (
-        <div className="flex items-center justify-between pb-1 border-b border-slate-100/80">
+        <div className="flex items-center justify-between pb-1 border-b border-[#071B2A]/[0.06]">
           <h4 className="text-[12px] font-semibold uppercase tracking-wider text-slate-500">
             {title}
           </h4>

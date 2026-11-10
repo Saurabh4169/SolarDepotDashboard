@@ -5,22 +5,24 @@ export default function StatCard({
   value,
   subtext,
   icon: Icon,
-  chipVariant = 'electric', // 'electric' | 'cantaloupe'
+  chipVariant = 'blue', // 'blue' | 'green' | 'purple' | 'orange' | 'electric' | 'cantaloupe'
   badgeText,
   onClick,
 }) {
   const chipStyles = {
-    electric: 'bg-iceblue border-[#0297DE]/15 text-electric-600',
-    cantaloupe: 'bg-[#FC734D]/10 border-[#FC734D]/25 text-cantaloupe-500',
+    blue: 'bg-[#E6F3FB] border-[#0297DE]/20 text-[#0297DE]',
+    green: 'bg-[#E5F7EE] border-[#10B981]/20 text-[#10B981]',
+    purple: 'bg-[#F1E8FD] border-[#8B5CF6]/20 text-[#8B5CF6]',
+    orange: 'bg-[#FFEDE6] border-[#FC734D]/20 text-[#FC734D]',
+    electric: 'bg-[#E6F3FB] border-[#0297DE]/20 text-[#0297DE]',
+    cantaloupe: 'bg-[#FFEDE6] border-[#FC734D]/20 text-[#FC734D]',
   };
 
   return (
     <div
       onClick={onClick}
       className={`
-        relative bg-white rounded-2xl p-6 border border-[#0297DE]/12 shadow-soft
-        hover:shadow-soft-lg hover:border-[#0297DE]/30 hover:-translate-y-0.5
-        transition-all duration-200 flex flex-col justify-between
+        relative glass-light glass-hover rounded-[20px] p-6 flex flex-col justify-between
         ${onClick ? 'cursor-pointer' : ''}
       `}
     >
@@ -28,14 +30,14 @@ export default function StatCard({
       <div className="flex items-center justify-between gap-3">
         <div
           className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 ${
-            chipStyles[chipVariant] || chipStyles.electric
+            chipStyles[chipVariant] || chipStyles.blue
           }`}
         >
           {Icon && <Icon className="w-5 h-5" strokeWidth={2.2} />}
         </div>
 
         {badgeText && (
-          <span className="text-[12px] font-semibold px-2.5 py-0.5 rounded-full bg-cantaloupe-50 text-cantaloupe-600 border border-cantaloupe-200">
+          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-gradient-to-r from-cantaloupe-400 to-cantaloupe-600 text-white shadow-orange tracking-wide">
             {badgeText}
           </span>
         )}

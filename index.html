@@ -14,12 +14,19 @@
   </head>
   <body class="bg-[#F7FAFC] text-navy antialiased selection:bg-electric-500/20 selection:text-electric-700">
     <div id="root">
-      <div style="min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background-color: #F7FAFC; color: #64748b; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;">
-        <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 48px; height: 48px;">
-          <div style="position: absolute; width: 52px; height: 52px; border-radius: 50%; background: rgba(2, 151, 222, 0.08);"></div>
-          <div style="width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(2, 151, 222, 0.2); border-top-color: #0297DE; animation: solarSpin 0.8s linear infinite;"></div>
+      <div style="min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: linear-gradient(135deg, #02070A 0%, #071B2A 55%, #0b2436 100%); color: #ffffff; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; position: relative; overflow: hidden;">
+        <div style="position: absolute; width: 320px; height: 320px; border-radius: 50%; background: rgba(2, 151, 222, 0.15); filter: blur(80px); pointer-events: none;"></div>
+        <div style="position: absolute; width: 260px; height: 260px; border-radius: 50%; background: rgba(252, 115, 77, 0.1); filter: blur(70px); pointer-events: none; transform: translate(40px, 40px);"></div>
+        <div style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 36px; border-radius: 24px; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03)); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+          <div style="position: relative; display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; margin-bottom: 12px;">
+            <div style="position: absolute; width: 56px; height: 56px; border-radius: 50%; border: 3px solid rgba(2, 151, 222, 0.2); border-top-color: #0297DE; border-right-color: #FC734D; animation: solarSpin 0.8s linear infinite;"></div>
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #3fb1e8, #0278b8); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 16px rgba(2,151,222,0.5);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            </div>
+          </div>
+          <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff;">Solar<span style="color: #3fb1e8;">Depot</span></h2>
+          <p style="margin: 4px 0 0; font-size: 12px; font-weight: 500; color: #94a3b8;">Loading Solar Depot...</p>
         </div>
-        <p style="margin: 0; font-size: 13px; font-weight: 500; color: #94a3b8;">Loading Solar Depot...</p>
         <style>
           @keyframes solarSpin {
             to { transform: rotate(360deg); }

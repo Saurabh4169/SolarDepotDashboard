@@ -15,40 +15,40 @@ export default function QuickActionsCard({
       title: 'Add Product',
       desc: 'Register solar inverter or battery unit',
       icon: PlusCircle,
-      iconColor: 'text-electric-600',
-      bgColor: 'bg-iceblue',
+      iconColor: 'text-[#0297DE]',
+      bgColor: 'bg-[#E6F3FB] border border-[#0297DE]/20',
       action: onAddProduct || (() => navigate('/admin/products?action=create')),
     },
     {
       title: 'Add Project',
       desc: 'Publish verified installation case study',
       icon: FolderPlus,
-      iconColor: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
+      iconColor: 'text-[#10B981]',
+      bgColor: 'bg-[#E5F7EE] border border-[#10B981]/20',
       action: onAddProject || (() => navigate('/admin/projects?action=create')),
     },
     {
       title: 'Add Solution',
       desc: 'Configure commercial solar system package',
       icon: Cpu,
-      iconColor: 'text-cantaloupe-500',
-      bgColor: 'bg-[#FC734D]/10',
+      iconColor: 'text-[#FC734D]',
+      bgColor: 'bg-[#FFEDE6] border border-[#FC734D]/20',
       action: onAddSolution || (() => navigate('/admin/solutions?action=create')),
     },
     {
       title: 'Add Customer',
       desc: 'Register new EPC commercial partner',
       icon: UserPlus,
-      iconColor: 'text-navy',
-      bgColor: 'bg-slate-100',
+      iconColor: 'text-[#8B5CF6]',
+      bgColor: 'bg-[#F1E8FD] border border-[#8B5CF6]/20',
       action: onAddCustomer || (() => navigate('/admin/customers?action=create')),
     },
   ];
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-[#0297DE]/12 shadow-soft flex flex-col justify-between h-full">
+    <div className="glass-light glass-hover rounded-[20px] p-6 flex flex-col justify-between h-full">
       {/* Header */}
-      <div className="pb-4 border-b border-slate-100">
+      <div className="pb-4 border-b border-[#071B2A]/[0.06]">
         <h3 className="font-display text-[18px] font-semibold text-navy leading-tight">
           Quick Actions
         </h3>
@@ -66,7 +66,7 @@ export default function QuickActionsCard({
               key={index}
               type="button"
               onClick={act.action}
-              className="w-full group flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-[#F7FAFC] hover:bg-iceblue/50 hover:border-[#0297DE]/25 transition-all text-left"
+              className="w-full group flex items-center justify-between p-3 rounded-xl border border-[#0297DE]/10 bg-white/70 hover:bg-[#EAF6FC]/70 hover:border-[#0297DE]/30 transition-all text-left"
             >
               <div className="flex items-center gap-3.5 min-w-0">
                 <div

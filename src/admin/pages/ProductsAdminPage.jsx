@@ -183,8 +183,6 @@ export default function ProductsAdminPage() {
     const drawerParam = searchParams.get('drawer');
     const idParam = searchParams.get('id');
 
-    if (products.length === 0) return;
-
     if (drawerParam === 'add') {
       setDrawerMode('add');
       setActiveProduct(null);
@@ -210,7 +208,7 @@ export default function ProductsAdminPage() {
       ]);
       setIsDirty(false);
       setIsDrawerOpen(true);
-    } else if ((drawerParam === 'view' || drawerParam === 'edit') && idParam) {
+    } else if ((drawerParam === 'view' || drawerParam === 'edit') && idParam && products.length > 0) {
       const found = products.find((p) => String(p.id) === String(idParam));
       if (found) {
         setActiveProduct(found);

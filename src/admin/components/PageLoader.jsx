@@ -4,16 +4,17 @@ import { Sun } from 'lucide-react';
 export default function PageLoader({ fullScreen = false, message = 'Loading dashboard...' }) {
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-navy text-white selection:bg-electric-500/20">
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[linear-gradient(135deg,#02070A_0%,#071B2A_55%,#0b2436_100%)] text-white select-none">
         {/* Ambient glow backgrounds */}
-        <div className="absolute w-72 h-72 rounded-full bg-electric-500/15 blur-3xl pointer-events-none -translate-y-8" />
-        <div className="absolute w-56 h-56 rounded-full bg-cantaloupe-500/10 blur-2xl pointer-events-none translate-y-12" />
+        <div className="absolute w-80 h-80 rounded-full bg-electric-500/20 blur-3xl pointer-events-none -translate-y-8" />
+        <div className="absolute w-72 h-72 rounded-full bg-cantaloupe-500/15 blur-2xl pointer-events-none translate-y-12" />
 
-        <div className="relative flex flex-col items-center gap-5">
-          {/* Logo with spinning electric ring and cantaloupe glow */}
+        {/* Centered Glass-Dark Card */}
+        <div className="relative glass-dark px-10 py-8 rounded-3xl border border-white/14 flex flex-col items-center gap-5 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6)]">
+          {/* Logo with spinning electric ring and cantaloupe accent */}
           <div className="relative flex items-center justify-center">
-            {/* Spinning electric ring */}
-            <div className="absolute w-20 h-20 rounded-full border-2 border-electric-500/20 border-t-electric-400 border-r-electric-500 animate-spin" />
+            {/* Spinning electric ring with cantaloupe accent */}
+            <div className="absolute w-20 h-20 rounded-full border-2 border-electric-500/20 border-t-electric-400 border-r-cantaloupe-500 animate-spin" />
             
             {/* Cantaloupe soft pulsing halo */}
             <div className="absolute w-14 h-14 rounded-full bg-cantaloupe-500/20 animate-pulse-glow" />
@@ -32,7 +33,7 @@ export default function PageLoader({ fullScreen = false, message = 'Loading dash
                 Admin
               </span>
             </h2>
-            <p className="text-xs text-slate-400 font-sans">{message}</p>
+            <p className="text-xs text-slate-300 font-sans">{message}</p>
           </div>
         </div>
       </div>

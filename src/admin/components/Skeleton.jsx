@@ -10,7 +10,7 @@ export function Skeleton({ className = '' }) {
 
 export function StatCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl p-6 border border-[#0297DE]/12 shadow-soft flex flex-col justify-between h-40">
+    <div className="glass-light rounded-[20px] p-6 border border-[#0297DE]/14 shadow-soft flex flex-col justify-between h-40">
       <div className="flex items-center justify-between">
         <Skeleton className="w-10 h-10 rounded-xl" />
       </div>
@@ -25,7 +25,7 @@ export function StatCardSkeleton() {
 
 export function TableRowSkeleton({ columns = 5 }) {
   return (
-    <tr className="border-b border-slate-100 h-16">
+    <tr className="border-b border-[#071B2A]/[0.06] h-16">
       {Array.from({ length: columns }).map((_, idx) => (
         <td key={idx} className="py-3.5 px-4">
           <Skeleton className="h-4 w-full rounded" />
@@ -52,8 +52,8 @@ export function AdminPageSkeleton() {
       </div>
 
       {/* Toolbar & Filter Skeleton */}
-      <div className="bg-white rounded-2xl border border-[#0297DE]/12 shadow-soft overflow-hidden">
-        <div className="p-4 sm:p-5 border-b border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div className="glass-light rounded-[20px] border border-[#0297DE]/14 shadow-soft overflow-hidden">
+        <div className="p-4 sm:p-5 border-b border-[#071B2A]/[0.06] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white/70">
           <div className="flex items-center gap-3 flex-1">
             <Skeleton className="w-64 h-11 rounded-xl" />
             <Skeleton className="w-36 h-11 rounded-xl" />
@@ -65,7 +65,7 @@ export function AdminPageSkeleton() {
         <div className="w-full overflow-hidden">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="border-b border-slate-100 bg-[#F7FAFC] h-12">
+              <tr className="border-b border-[#071B2A]/[0.06] bg-[#EAF6FC]/70 h-12">
                 <th className="py-3 px-4 text-left"><Skeleton className="w-24 h-3.5 rounded" /></th>
                 <th className="py-3 px-4 text-left"><Skeleton className="w-20 h-3.5 rounded" /></th>
                 <th className="py-3 px-4 text-left"><Skeleton className="w-16 h-3.5 rounded" /></th>

@@ -213,21 +213,21 @@ export default function DashboardOverviewPage() {
                 value={stats.totalProducts}
                 subtext="Catalog inverters and batteries"
                 icon={Package}
-                chipVariant="electric"
+                chipVariant="blue"
               />
               <StatCard
                 title="Active Products"
                 value={stats.activeProducts}
                 subtext="Operational in catalog"
                 icon={Zap}
-                chipVariant="electric"
+                chipVariant="green"
               />
               <StatCard
                 title="Enquiries"
                 value={stats.totalEnquiries}
                 subtext={`${stats.newEnquiriesCount} pending engineering review`}
                 icon={MessageSquare}
-                chipVariant="cantaloupe"
+                chipVariant="purple"
                 badgeText={stats.newEnquiriesCount > 0 ? `${stats.newEnquiriesCount} New` : null}
               />
               <StatCard
@@ -235,14 +235,14 @@ export default function DashboardOverviewPage() {
                 value={stats.quotesPreparedCount}
                 subtext="Proposals sent to EPC partners"
                 icon={FileCheck2}
-                chipVariant="cantaloupe"
+                chipVariant="orange"
               />
               <StatCard
                 title="Total Customers"
                 value={stats.totalCustomers}
                 subtext="Verified EPC installer network"
                 icon={Users2}
-                chipVariant="electric"
+                chipVariant="blue"
               />
             </>
           )}

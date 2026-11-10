@@ -32,18 +32,18 @@ export default function Modal({
     <div className="fixed inset-0 z-[130] flex items-center justify-center p-4 sm:p-6 overflow-y-auto animate-fade-in select-none">
       {/* Soft Dark Backdrop */}
       <div
-        className="fixed inset-0 bg-[#071B2A]/60 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-[#02070A]/55 backdrop-blur-[4px] transition-opacity"
         onClick={onClose}
       />
 
       {/* Modal Dialog Content */}
       <div
-        className={`relative w-full ${maxWidth} bg-white rounded-2xl shadow-[-20px_20px_50px_rgba(0,0,0,0.35)] border border-[#0297DE]/15 overflow-hidden z-10 my-auto`}
+        className={`relative w-full ${maxWidth} glass-light rounded-[20px] shadow-[-20px_20px_50px_rgba(0,0,0,0.35)] border border-[#0297DE]/18 overflow-hidden z-10 my-auto`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-100 bg-[#F7FAFC]">
+          <div className="flex items-center justify-between px-6 py-4.5 border-b border-[#071B2A]/[0.06] bg-[#EAF6FC]/40">
             <div>
               <h3 className="font-display text-[18px] font-semibold text-navy leading-tight">
                 {title}

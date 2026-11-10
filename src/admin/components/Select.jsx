@@ -48,11 +48,12 @@ const Select = forwardRef(function Select(
           disabled={disabled}
           className={`
             w-full h-11 px-3.5 pr-10
-            rounded-xl bg-white text-navy text-[14px] font-medium
-            border border-slate-200 hover:border-slate-300
+            rounded-xl bg-white/90 text-navy text-[14px] font-medium
+            border border-[#0297DE]/18 hover:border-[#0297DE]/32
             focus:outline-none focus:ring-2 focus:ring-electric-500/20 focus:border-electric-500
             transition-all duration-150 appearance-none cursor-pointer
             disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed
+            shadow-sm
             ${error ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20' : ''}
             ${className}
           `}

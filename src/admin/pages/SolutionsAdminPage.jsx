@@ -271,13 +271,6 @@ export default function SolutionsAdminPage() {
       ),
     },
     {
-      header: 'Slug Route',
-      accessor: 'slug',
-      cell: (row) => (
-        <span className="text-[13px] text-slate-500 tabular-nums">/{row.slug}</span>
-      ),
-    },
-    {
       header: 'Description',
       accessor: 'description',
       cell: (row) => (

@@ -88,7 +88,7 @@ export default function AdminSidebar() {
       {/* Glossy Gradient Sidebar */}
       <aside
         style={{
-          background: 'linear-gradient(180deg, #071B2A 0%, #0b2f4a 45%, #0278b8 100%)',
+          background: 'linear-gradient(180deg, #02070A 0%, #071B2A 40%, #0b2f4a 75%, #0278b8 100%)',
         }}
         className={`
           fixed lg:relative top-0 bottom-0 left-0 lg:top-auto lg:bottom-auto lg:left-auto z-50 lg:z-20
@@ -100,13 +100,13 @@ export default function AdminSidebar() {
           ${sidebarCollapsed ? 'lg:w-[76px]' : 'lg:w-[280px]'}
         `}
       >
-        {/* Soft Glossy Highlight Overlays */}
+        {/* Soft Glossy Highlight Overlays: Cantaloupe top-left & Electric bottom-left */}
         <div
           className="pointer-events-none absolute inset-0 z-0"
           style={{
             backgroundImage: `
-              radial-gradient(circle at top left, rgba(255,255,255,0.08) 0%, transparent 65%),
-              radial-gradient(circle at bottom left, rgba(2,151,222,0.18) 0%, transparent 60%)
+              radial-gradient(circle at top left, rgba(252, 115, 77, 0.08) 0%, transparent 60%),
+              radial-gradient(circle at bottom left, rgba(2, 151, 222, 0.22) 0%, transparent 60%)
             `,
           }}
         />
@@ -166,8 +166,8 @@ export default function AdminSidebar() {
                         transition-all duration-200
                         ${
                           isActive
-                            ? 'bg-white/[0.12] border border-white/20 text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-sm'
-                            : 'text-slate-300 hover:text-white hover:bg-white/10'
+                            ? 'glass-dark !border-electric-500/40 text-white shadow-[inset_0_1px_1px_rgba(255,255,255,0.18),0_0_15px_-3px_rgba(2,151,222,0.3)]'
+                            : 'text-slate-300 hover:text-white hover:bg-white/[0.08]'
                         }
                         ${sidebarCollapsed ? 'justify-center px-0' : ''}
                       `}
@@ -176,7 +176,7 @@ export default function AdminSidebar() {
                         <>
                           <Icon
                             className={`w-5 h-5 shrink-0 transition-colors ${
-                              isActive ? 'text-electric-300' : 'text-slate-300 group-hover:text-white'
+                              isActive ? 'text-electric-400' : 'text-slate-300 group-hover:text-electric-400'
                             }`}
                           />
 
@@ -184,13 +184,8 @@ export default function AdminSidebar() {
                             <span className="flex-1 truncate">{item.label}</span>
                           )}
 
-                          {/* Cantaloupe Active Dot Indicator on Right */}
-                          {isActive && !sidebarCollapsed && (
-                            <span className="w-2 h-2 rounded-full bg-cantaloupe-500 shadow-[0_0_8px_rgba(252,115,77,0.7)] ml-auto shrink-0" />
-                          )}
-
                           {!sidebarCollapsed && !isActive && item.badge && (
-                            <span className="px-2 py-0.5 text-[12px] font-semibold rounded-full bg-cantaloupe-500 text-white shrink-0 ml-auto">
+                            <span className="px-2 py-0.5 text-[12px] font-semibold rounded-full bg-gradient-to-r from-cantaloupe-400 to-cantaloupe-600 text-white shrink-0 ml-auto shadow-orange">
                               {item.badge}
                             </span>
                           )}
@@ -211,7 +206,7 @@ export default function AdminSidebar() {
           <div className="p-3.5 border-t border-white/[0.08] shrink-0">
             <div
               className={`
-                flex items-center justify-between p-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08] backdrop-blur-sm
+                flex items-center justify-between p-2.5 rounded-xl glass-dark border border-white/[0.12]
                 ${sidebarCollapsed ? 'flex-col gap-2 p-2' : ''}
               `}
             >
@@ -223,9 +218,9 @@ export default function AdminSidebar() {
                       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
                     }
                     alt={adminUser?.name || 'Admin'}
-                    className="w-9 h-9 rounded-xl object-cover ring-1 ring-white/20"
+                    className="w-9 h-9 rounded-xl object-cover ring-2 ring-electric-500/30"
                   />
-                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-[#071B2A]" />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-navy" />
                 </div>
 
                 {!sidebarCollapsed && (

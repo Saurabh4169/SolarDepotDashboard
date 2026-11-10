@@ -89,7 +89,10 @@ export default function AdminHeader() {
   };
 
   return (
-    <header className="h-16 px-4 sm:px-6 lg:px-8 bg-white border-b border-[#0297DE]/12 shrink-0 select-none z-20">
+    <header className="h-16 px-4 sm:px-6 lg:px-8 bg-white/80 backdrop-blur-md border-b border-[#0297DE]/12 shrink-0 select-none z-20 relative">
+      {/* Cantaloupe to transparent glowing line at bottom edge (matching mobile app header) */}
+      <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-cantaloupe-500/80 via-cantaloupe-400/40 to-transparent pointer-events-none" />
+
       <div className="w-full max-w-[1600px] mx-auto h-full flex items-center justify-between">
       {/* Left: Mobile Toggle & Breadcrumbs (Highlander style: Dashboard / Products) */}
       <div className="flex items-center gap-3">
@@ -126,19 +129,19 @@ export default function AdminHeader() {
           >
             <Bell className="w-5 h-5" />
             {unreadNotifCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-cantaloupe-500 text-white text-[10px] font-bold flex items-center justify-center shadow-orange">
+              <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-gradient-to-r from-cantaloupe-400 to-cantaloupe-600 text-white text-[10px] font-bold flex items-center justify-center shadow-orange">
                 {unreadNotifCount}
               </span>
             )}
           </button>
 
           {notifOpen && (
-            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-soft-lg border border-[#0297DE]/15 overflow-hidden z-50 animate-fade-in">
-              <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white/95 backdrop-blur-xl rounded-2xl shadow-soft-lg border border-[#0297DE]/18 overflow-hidden z-50 animate-fade-in">
+              <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
                 <div className="flex items-center gap-2">
                   <span className="font-display text-[14px] font-bold text-navy">Notifications</span>
                   {unreadNotifCount > 0 && (
-                    <span className="text-[12px] font-semibold px-2 py-0.5 rounded-full bg-cantaloupe-50 text-cantaloupe-600 border border-cantaloupe-200">
+                    <span className="text-[12px] font-semibold px-2 py-0.5 rounded-full bg-gradient-to-r from-cantaloupe-400/15 to-cantaloupe-600/15 text-cantaloupe-600 border border-cantaloupe-200">
                       {unreadNotifCount} unread
                     </span>
                   )}
@@ -146,7 +149,7 @@ export default function AdminHeader() {
                 <Link
                   to="/admin/notifications"
                   onClick={() => setNotifOpen(false)}
-                  className="text-[13px] text-electric-600 hover:text-electric-700 font-semibold"
+                  className="text-[13px] text-electric hover:text-electric-600 font-semibold"
                 >
                   Manage All
                 </Link>
@@ -216,7 +219,7 @@ export default function AdminHeader() {
                   'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
                 }
                 alt={adminUser?.name || 'Admin'}
-                className="w-8 h-8 rounded-lg object-cover ring-1 ring-slate-200"
+                className="w-8 h-8 rounded-lg object-cover ring-2 ring-electric-500/40"
               />
               <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
             </div>

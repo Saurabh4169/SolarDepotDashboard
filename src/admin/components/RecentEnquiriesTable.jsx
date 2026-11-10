@@ -8,9 +8,9 @@ export default function RecentEnquiriesTable({ enquiries = [], onViewEnquiry }) 
   const displayItems = enquiries.slice(0, 5);
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-[#0297DE]/12 shadow-soft flex flex-col justify-between h-full">
+    <div className="glass-light glass-hover rounded-[20px] p-6 flex flex-col justify-between h-full">
       {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div className="flex items-center justify-between pb-4 border-b border-[#071B2A]/[0.06]">
         <div>
           <h3 className="font-display text-[18px] font-semibold text-navy leading-tight">
             Recent Enquiries & Quotes
@@ -22,7 +22,7 @@ export default function RecentEnquiriesTable({ enquiries = [], onViewEnquiry }) 
 
         <Link
           to="/admin/enquiries"
-          className="text-[13px] font-semibold text-electric-600 hover:text-electric-700 flex items-center gap-1 transition-colors"
+          className="text-[13px] font-semibold text-electric hover:text-electric-600 flex items-center gap-1 transition-colors"
         >
           <span>View all</span>
           <ArrowRight className="w-4 h-4" />
@@ -33,7 +33,7 @@ export default function RecentEnquiriesTable({ enquiries = [], onViewEnquiry }) 
       <div className="w-full overflow-x-auto custom-scrollbar my-2">
         <table className="w-full text-left border-collapse min-w-[580px]">
           <thead>
-            <tr className="border-b border-slate-100 bg-[#F7FAFC] text-[12px] font-semibold uppercase tracking-[0.04em] text-slate-500 select-none">
+            <tr className="border-b border-[#071B2A]/[0.06] bg-[#EAF6FC]/70 text-[12px] font-semibold uppercase tracking-[0.04em] text-slate-500 select-none">
               <th className="py-3.5 px-4">Ref #</th>
               <th className="py-3.5 px-4">Customer</th>
               <th className="py-3.5 px-4">Product / Solution</th>
@@ -43,7 +43,7 @@ export default function RecentEnquiriesTable({ enquiries = [], onViewEnquiry }) 
               <th className="py-3.5 px-4 text-center w-20">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 text-[14px] text-slate-700">
+          <tbody className="divide-y divide-[#071B2A]/[0.06] text-[14px] text-slate-700">
             {displayItems.length === 0 ? (
               <tr>
                 <td colSpan={7} className="py-8 text-center text-[13px] text-slate-400">
@@ -55,7 +55,7 @@ export default function RecentEnquiriesTable({ enquiries = [], onViewEnquiry }) 
                 <tr
                   key={item.id}
                   onClick={() => onViewEnquiry && onViewEnquiry(item)}
-                  className="h-16 hover:bg-iceblue/50 transition-colors cursor-pointer group"
+                  className="h-16 hover:bg-electric-500/[0.06] transition-colors cursor-pointer group"
                 >
                   <td className="py-3.5 px-4 font-semibold text-electric-600 tabular-nums">
                     {item.id}

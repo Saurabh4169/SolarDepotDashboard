@@ -15,9 +15,9 @@ export default function Toggle({
   return (
     <label
       className={`
-        flex items-center justify-between gap-4 p-3.5 rounded-xl border border-slate-200/80 bg-white
+        flex items-center justify-between gap-4 p-3.5 rounded-xl border border-[#0297DE]/18 bg-white/90
         transition-all duration-150 cursor-pointer select-none
-        hover:border-slate-300
+        hover:border-[#0297DE]/32
         ${disabled ? 'opacity-60 cursor-not-allowed' : ''}
         ${className}
       `}
@@ -46,9 +46,10 @@ export default function Toggle({
         />
         <div
           className={`
-            w-11 h-6 rounded-full transition-colors duration-200 ease-in-out
+            w-11 h-6 rounded-full transition-all duration-200 ease-in-out
             bg-slate-200 peer-focus:ring-2 peer-focus:ring-electric-500/20
-            peer-checked:bg-electric-500
+            peer-checked:bg-gradient-to-r peer-checked:from-electric-400 peer-checked:to-electric-600
+            peer-checked:shadow-glow
           `}
         />
         <div

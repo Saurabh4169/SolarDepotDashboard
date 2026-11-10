@@ -7,9 +7,9 @@ export default function LatestInquiriesCard({ enquiries = [], onViewEnquiry }) {
   const displayItems = enquiries.slice(0, 5);
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-[#0297DE]/12 shadow-soft flex flex-col justify-between h-full">
+    <div className="glass-light glass-hover rounded-[20px] p-6 flex flex-col justify-between h-full">
       {/* Header with Title and "View all" Link */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div className="flex items-center justify-between pb-4 border-b border-[#071B2A]/[0.06]">
         <div>
           <h3 className="font-display text-[18px] font-semibold text-navy leading-tight">
             Latest Inquiries
@@ -21,7 +21,7 @@ export default function LatestInquiriesCard({ enquiries = [], onViewEnquiry }) {
 
         <Link
           to="/admin/enquiries"
-          className="text-[13px] font-semibold text-electric-600 hover:text-electric-700 flex items-center gap-1 transition-colors"
+          className="text-[13px] font-semibold text-electric hover:text-electric-600 flex items-center gap-1 transition-colors"
         >
           <span>View all</span>
           <ArrowRight className="w-4 h-4" />
@@ -29,7 +29,7 @@ export default function LatestInquiriesCard({ enquiries = [], onViewEnquiry }) {
       </div>
 
       {/* List */}
-      <div className="divide-y divide-slate-100 flex-1 my-2">
+      <div className="divide-y divide-[#071B2A]/[0.06] flex-1 my-2">
         {displayItems.length === 0 ? (
           <div className="py-8 text-center text-[13px] text-slate-400">
             No inquiries logged yet
@@ -39,7 +39,7 @@ export default function LatestInquiriesCard({ enquiries = [], onViewEnquiry }) {
             <div
               key={item.id}
               onClick={() => onViewEnquiry && onViewEnquiry(item)}
-              className="py-3.5 px-2 flex items-center justify-between gap-4 group hover:bg-iceblue/50 rounded-xl transition-colors cursor-pointer"
+              className="py-3.5 px-2 flex items-center justify-between gap-4 group hover:bg-electric-500/[0.06] rounded-xl transition-colors cursor-pointer"
             >
               {/* Left Details: Line 1 (Name + Pill), Line 2 (Product) */}
               <div className="min-w-0 flex-1 space-y-1">

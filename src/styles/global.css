@@ -8,6 +8,40 @@
   :root {
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+    /* 1) Color Tokens (Exact match to Solar Depot Mobile App) */
+    --midnight: #02070A;
+    --navy: #071B2A;
+    --navy-700: #0b2436;
+    --navy-600: #102e45;
+    --electric: #0297DE;
+    --electric-400: #3fb1e8;
+    --electric-600: #0278b8;
+    --cantaloupe: #FC734D;
+    --cantaloupe-400: #fd8a6a;
+    --cantaloupe-600: #e85a34;
+    --bg: #F7FAFC;
+    --ice: #EAF6FC;
+    --pale: #DDF1FA;
+    --text: #0B1B2B;
+    --text-body: #334155;
+    --text-muted: #64748B;
+
+    /* Icon Chip Tints */
+    --chip-blue-bg: #E6F3FB;
+    --chip-blue-icon: #0297DE;
+    --chip-orange-bg: #FFEDE6;
+    --chip-orange-icon: #FC734D;
+    --chip-green-bg: #E5F7EE;
+    --chip-green-icon: #10B981;
+    --chip-purple-bg: #F1E8FD;
+    --chip-purple-icon: #8B5CF6;
+
+    /* 2) Gradients */
+    --grad-dark: linear-gradient(135deg, #02070A 0%, #071B2A 55%, #0b2436 100%);
+    --grad-sidebar: linear-gradient(180deg, #02070A 0%, #071B2A 40%, #0b2f4a 75%, #0278b8 100%);
+    --grad-electric: linear-gradient(135deg, #3fb1e8 0%, #0297DE 55%, #0278b8 100%);
+    --grad-cta: linear-gradient(135deg, #fd8a6a 0%, #FC734D 60%, #e85a34 100%);
   }
 
   html, body {
@@ -39,16 +73,16 @@
   }
 }
 
-/* Custom Scrollbar for mobile scroll areas */
+/* Thin Scrollbar matching mobile app */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(2, 151, 222, 0.2);
+  background: rgba(2, 151, 222, 0.25);
   border-radius: 9999px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -63,7 +97,107 @@
   scrollbar-width: none;
 }
 
-/* Glass styles */
+/* 3) Glassmorphism Utilities */
+.glass-dark {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.glass-dark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  pointer-events: none;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.glass-light {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.72));
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid rgba(2, 151, 222, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 12px 30px -12px rgba(7, 27, 42, 0.16);
+}
+
+.glass-light::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  pointer-events: none;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.glass-hover {
+  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.glass-hover:hover {
+  transform: translateY(-2px);
+  border-color: rgba(2, 151, 222, 0.30);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 18px 40px -14px rgba(2, 151, 222, 0.28);
+}
+
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-dark {
+    background: #071B2A;
+  }
+  .glass-light {
+    background: #ffffff;
+  }
+}
+
+/* Fixed Soft Page Background (--grad-page) */
+.bg-admin-page {
+  background-color: #F7FAFC;
+  background-image: 
+    radial-gradient(600px circle at 0% 0%, rgba(2, 151, 222, 0.08), transparent 60%),
+    radial-gradient(500px circle at 100% 0%, rgba(252, 115, 77, 0.07), transparent 55%);
+  background-attachment: fixed;
+}
+
+/* Subtle Global Form Input Theme */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+  border-color: rgba(2, 151, 222, 0.18);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #0297DE !important;
+  box-shadow: 0 0 0 2px rgba(2, 151, 222, 0.2), 0 0 12px -2px rgba(2, 151, 222, 0.25) !important;
+}
+
+/* Mobile Glass styles preserved for mobile components */
 .glass-header {
   background: rgba(7, 27, 42, 0.92);
   backdrop-filter: blur(20px);

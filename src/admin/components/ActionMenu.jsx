@@ -124,11 +124,11 @@ export default function ActionMenu({
                 : { left: `${Math.max(12, coords.left)}px` }),
               zIndex: 9999,
             }}
-            className="w-44 py-1.5 bg-white rounded-xl shadow-soft-lg border border-[#0297DE]/15 focus:outline-none animate-in fade-in zoom-in-95 duration-100 origin-top-right select-none"
+            className="w-44 py-1.5 glass-light rounded-xl shadow-soft-lg border border-[#0297DE]/18 focus:outline-none animate-in fade-in zoom-in-95 duration-100 origin-top-right select-none"
           >
             {visibleItems.map((item, idx) => {
               if (item.divider) {
-                return <div key={`div-${idx}`} className="my-1 border-t border-slate-100" />;
+                return <div key={`div-${idx}`} className="my-1 border-t border-[#071B2A]/[0.06]" />;
               }
 
               const Icon = item.icon;
@@ -154,7 +154,7 @@ export default function ActionMenu({
                       ? 'opacity-40 cursor-not-allowed text-slate-400'
                       : isDanger
                       ? 'text-rose-600 hover:bg-rose-50 hover:text-rose-700'
-                      : 'text-slate-700 hover:text-electric-600 hover:bg-iceblue'
+                      : 'text-slate-700 hover:text-electric hover:bg-[#EAF6FC]'
                   }`}
                 >
                   {Icon && (
