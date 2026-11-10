@@ -137,7 +137,7 @@ export default function AdminLoginPage() {
   const isFormValid = email.trim().length > 0 && password.length > 0;
 
   return (
-    <div className="relative min-h-[100dvh] w-full bg-[#F6F9FC] flex items-center justify-center p-3 sm:p-6 lg:p-8 select-none overflow-x-hidden overflow-y-auto">
+    <div className="relative min-h-[100dvh] w-full bg-[#EDF2F7] flex items-center justify-center p-3 sm:p-6 lg:p-8 select-none overflow-x-hidden overflow-y-auto">
       {/* Scoped CSS animations & WebKit Autofill Overrides */}
       <style>{`
         @keyframes loginCardEnter {
@@ -185,21 +185,8 @@ export default function AdminLoginPage() {
         }
       `}</style>
 
-      {/* Subtle Dot Grid Background Pattern */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-60"
-        style={{
-          backgroundImage:
-            'radial-gradient(rgba(7, 27, 42, 0.14) 1.2px, transparent 1.2px)',
-          backgroundSize: '24px 24px',
-        }}
-      />
-
-      {/* Ambient Soft Color Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[650px] bg-gradient-to-tr from-[#0297DE]/10 to-[#FC734D]/10 rounded-full blur-[140px] pointer-events-none" />
-
       {/* Main Centered 2-Column Split Card */}
-      <div className="relative z-10 w-full max-w-[1140px] bg-white rounded-[28px] sm:rounded-[32px] shadow-[0_25px_70px_-15px_rgba(7,27,42,0.18),0_0_0_1px_rgba(7,27,42,0.06)] overflow-hidden grid grid-cols-1 lg:grid-cols-2 animate-login-card my-auto">
+      <div className="relative z-10 w-full max-w-[1140px] bg-white rounded-[28px] sm:rounded-[32px] shadow-[0_20px_50px_-12px_rgba(7,27,42,0.14),0_0_0_1px_rgba(7,27,42,0.05)] overflow-hidden grid grid-cols-1 lg:grid-cols-2 animate-login-card my-auto">
         {/* LEFT COLUMN: Clean White Form Area */}
         <div className="p-6 sm:p-10 lg:p-12 flex flex-col justify-between bg-white relative min-w-0">
           {/* Header Row: Logo & Status Badge */}
